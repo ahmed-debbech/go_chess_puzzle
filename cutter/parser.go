@@ -6,7 +6,6 @@ import (
 	"os"
 	"bufio"
 	"strconv"
-	"math/rand/v2"
 )
 
 type OnePgnGame struct {
@@ -14,8 +13,22 @@ type OnePgnGame struct {
 	Moves []byte
 }
 
-func prepareDataToSave(s OnePgnGame) ([]byte, int){
-	id := rand.IntN(4000000000)
+func prepareDataToSave(s OnePgnGame) ([]byte, string){
+	var id string
+	var c int 
+	match_count, err := os.ReadFile("match_count")
+	if err != nil {
+		match_count = []byte("1")
+	}else{
+		c, _ = strconv.Atoi(string(match_count))
+		c++
+		id = strconv.Itoa(c)
+	}
+	err = os.WriteFile("match_count", []byte(strconv.Itoa(c)) , 0644)
+	if err != nil {
+		panic("could not write new match_count conter in a file")
+	}
+
 	var d []byte = make([]byte, 0)
 	d = append(d,s.Tags...) 
 	d = append(d, []byte{0x0A}...)
@@ -57,7 +70,7 @@ func main() {
 
 				//TODO add a way to index files incrementatly rather then randomly
 				b, id := prepareDataToSave(opg)
-				err = os.WriteFile("games/"+strconv.Itoa(id), b, 0644)
+				err = os.WriteFile(os.Getenv("STORE_AT") + id, b, 0644)
 				if err != nil{
 					fmt.Println(err)
 					panic("could not write new file to store a game's pgn")	
