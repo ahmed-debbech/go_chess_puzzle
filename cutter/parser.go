@@ -90,7 +90,6 @@ func main() {
 		if f == 2 {
 			opg.Moves = append(opg.Moves, []byte(scanner.Text())...)
 		}
-		fmt.Println("counter: ", counter)
 		counter++
 	}
 
