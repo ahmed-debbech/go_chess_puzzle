@@ -1,0 +1,1 @@
+go run path_of_large_pgn path_to_where

@@ -1,4 +1,4 @@
-package main
+package chess
 
 import (
 	"github.com/notnil/chess"
