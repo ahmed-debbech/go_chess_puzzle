@@ -6,13 +6,14 @@ import (
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/chess"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/logic"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/utils"
+	"github.com/ahmed-debbech/go_chess_puzzle/generator/engine"
 )
 
 
 func main() {
 	
-	if len(os.Args) <= 2{
-		fmt.Println("NO ARGS!!")
+	if len(os.Args) <= 3{
+		fmt.Println("NOT ENOUGH ARGS!!")
 		os.Exit(1)
 	} 
 
@@ -27,6 +28,11 @@ func main() {
 		os.Exit(1)
 	}
 
+	if !utils.IsDirectoryExist(os.Args[3]) {
+		fmt.Println("ERROR: could not find Stockfish exec.")
+		os.Exit(1)
+	}
+
 	fmt.Println("Looking for a game match from this directory: ", os.Args[2])
 
 	match_content, id := logic.LookupMatch(os.Args[2], max)
@@ -34,7 +40,14 @@ func main() {
 	fmt.Println("[SUCCESS] MATCH FOUND! ID: ", id)
 
 	game := chess.ObjectifyGame(match_content)
-	fmt.Println(game.Position().Board().Draw())
+	fmt.Println(game.Position().Board().Draw(), " " , game.GetTagPair("Site"))
+	
+	gameWithRandPos := chess.JumpToRandPosition(game)
+	//fmt.Println(gameWithRandPos.Position().Board().Draw())
 
+	FEN := chess.GenerateFen(gameWithRandPos)
+	fmt.Println(FEN)
 
+	bestmove := engine.GetBestMove(FEN)
+	fmt.Println(bestmove)
 }

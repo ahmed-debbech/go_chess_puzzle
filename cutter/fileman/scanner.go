@@ -82,7 +82,7 @@ func Scan(file *os.File, dir string){
 			continue
 		}
 		if f == 1 {
-			opg.Tags = append(opg.Tags, []byte(scanner.Text())...)
+			opg.Tags = append(opg.Tags, []byte(scanner.Text()+string('\n'))...)
 		}
 		if f == 2 {
 			opg.Moves = append(opg.Moves, []byte(scanner.Text())...)
