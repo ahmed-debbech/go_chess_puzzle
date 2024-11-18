@@ -36,3 +36,20 @@ func GenerateFen(game *chess.Game) string{
 	fmt.Println("[SUCCESS] generating FEN")
 	return game.FEN()
 }
+
+func MakeMoveAndFEN(game *chess.Game, move string) string{
+
+	p  := game.Position();
+	uci := chess.UCINotation{}
+
+	mv, err := uci.Decode(p, move);
+	if err != nil {
+		fmt.Println("[ERROR] move from SF not clear for our program")
+		return ""
+	}
+
+	if err := game.Move(mv); err != nil {
+		fmt.Println("[ERROR] could not make move: ", err)
+	}
+	return game.FEN()
+}

@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
+	"time"
 	"os"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/chess"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/logic"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/utils"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/engine"
+	"github.com/ahmed-debbech/go_chess_puzzle/generator/config"
+	"github.com/ahmed-debbech/go_chess_puzzle/generator/data"
 )
 
 
@@ -48,6 +51,24 @@ func main() {
 	FEN := chess.GenerateFen(gameWithRandPos)
 	fmt.Println(FEN)
 
-	bestmove := engine.GetBestMove(FEN)
-	fmt.Println(bestmove)
+	movesNumber := config.BestMovesNumber
+	newfen := FEN
+	var bestmvs [config.BestMovesNumber]string
+	for i:=0; i<movesNumber; i++ {
+		bestmove := engine.GetBestMove(newfen)
+		bestmvs[i] = bestmove
+
+		newfen = chess.MakeMoveAndFEN(gameWithRandPos, bestmove)
+		if newfen == "" { break; }
+	}
+	fmt.Println("[SUCCESS] all best ", movesNumber, " moves have been generated. ", bestmvs)
+
+	puzzle := data.Puzzle{
+		ID: string(id),
+		FEN: FEN,
+		BestMove: bestmvs,
+		GenTime: string(time.Now().UnixNano()),
+		SolveTime: "",
+		MatchLink: game.Tags["Site"],
+	}
 }

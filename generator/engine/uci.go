@@ -7,6 +7,7 @@ import (
 	"errors"
 	"bufio"
 	"strings"
+	"github.com/ahmed-debbech/go_chess_puzzle/generator/config"
 )
 
 type UCI struct{
@@ -72,7 +73,7 @@ func (uci *UCI) setPosition(FEN string) error {
 }
 
 func (uci *UCI) Go() error {
-	nm, err := uci.Stdin.WriteString("go movetime 10000\n")
+	nm, err := uci.Stdin.WriteString("go movetime "+ config.MoveTimeEngine +"\n")
 	if err != nil {
 		fmt.Println("[ERROR] when GO command issued")
 		return errors.New("[ERROR] when GO command issued")
@@ -92,7 +93,7 @@ func (uci * UCI) GetResultsBestMove() string{
 	bestmove := ""
 	for{
 		n, _, _ := uci.Stdout.ReadLine();
-		fmt.Println("READING: ", string(n))	
+		//fmt.Println("READING: ", string(n))	
 		if strings.HasPrefix(string(n), "bestmove") {
 			fmt.Println("BESTMOVE IS: ", string(n))	
 			bestmove = string(n)
