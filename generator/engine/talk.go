@@ -8,6 +8,10 @@ import(
 
 )
 
+func extractBestMove(str string) (string){
+	return str[9:13]
+}
+
 func GetBestMove(FEN string) (string){
 
 	uci := &UCI{}
@@ -28,12 +32,12 @@ func GetBestMove(FEN string) (string){
 	}
 
 	bm := uci.GetResultsBestMove()
-	fmt.Println("[SUCCESS] got best move")
+	fmt.Println("[SUCCESS] got best move (", bm ,")")
 	
 	if err := uci.Kill(); err != nil{
 		return ""
 	}
 
 	fmt.Println("[SUCCESS] finished stockfish")
-	return bm
+	return extractBestMove(bm)
 }
