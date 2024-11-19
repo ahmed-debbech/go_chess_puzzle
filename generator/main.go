@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 	"os"
+	"strconv"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/chess"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/logic"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/utils"
@@ -64,11 +65,16 @@ func main() {
 	fmt.Println("[SUCCESS] all best ", movesNumber, " moves have been generated. ", bestmvs)
 
 	puzzle := data.Puzzle{
-		ID: string(id),
+		ID: strconv.Itoa(id),
 		FEN: FEN,
-		BestMove: bestmvs,
-		GenTime: string(time.Now().UnixNano()),
+		BestMoves: bestmvs,
+		GenTime: strconv.Itoa(int(time.Now().UnixNano())),
 		SolveTime: "",
-		MatchLink: game.Tags["Site"],
+		MatchLink: game.GetTagPair("Site").Key,
+		SeenCount: 0,
+		FirstSeenTime: "",
 	}
+	fmt.Println("[SUCCESS] generate puzzle " ,puzzle.String())
+
+	
 }

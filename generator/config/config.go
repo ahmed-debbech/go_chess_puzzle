@@ -1,4 +1,4 @@
 package config
 
-const BestMovesNumber = 4
-const MoveTimeEngine = "5000"
+const BestMovesNumber = 1
+const MoveTimeEngine = "1000"
