@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"os"
 	"strconv"
+	"time"
+
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/chess"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/logic"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/utils"
@@ -37,44 +38,50 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("Looking for a game match from this directory: ", os.Args[2])
+	for{
+		fmt.Println("Looking for a game match from this directory: ", os.Args[2])
 
-	match_content, id := logic.LookupMatch(os.Args[2], max)
-	//fmt.Println(match_content)
-	fmt.Println("[SUCCESS] MATCH FOUND! ID: ", id)
+		match_content, id := logic.LookupMatch(os.Args[2], max)
+		//fmt.Println(match_content)
+		fmt.Println("[SUCCESS] MATCH FOUND! ID: ", id)
 
-	game := chess.ObjectifyGame(match_content)
-	fmt.Println(game.Position().Board().Draw(), " " , game.GetTagPair("Site"))
-	
-	gameWithRandPos := chess.JumpToRandPosition(game)
-	//fmt.Println(gameWithRandPos.Position().Board().Draw())
+		game := chess.ObjectifyGame(match_content)
+		fmt.Println(game.Position().Board().Draw(), " " , game.GetTagPair("Site"))
+		
+		gameWithRandPos := chess.JumpToRandPosition(game)
+		//fmt.Println(gameWithRandPos.Position().Board().Draw())
 
-	FEN := chess.GenerateFen(gameWithRandPos)
-	fmt.Println(FEN)
+		FEN := chess.GenerateFen(gameWithRandPos)
+		fmt.Println(FEN)
 
-	movesNumber := config.BestMovesNumber
-	newfen := FEN
-	var bestmvs [config.BestMovesNumber]string
-	for i:=0; i<movesNumber; i++ {
-		bestmove := engine.GetBestMove(newfen)
-		bestmvs[i] = bestmove
+		movesNumber := config.BestMovesNumber
+		newfen := FEN
+		var bestmvs [config.BestMovesNumber]string
+		for i:=0; i<movesNumber; i++ {
+			bestmove := engine.GetBestMove(newfen)
+			bestmvs[i] = bestmove
 
-		newfen = chess.MakeMoveAndFEN(gameWithRandPos, bestmove)
-		if newfen == "" { break; }
+			newfen = chess.MakeMoveAndFEN(gameWithRandPos, bestmove)
+			if newfen == "" { break; }
+		}
+		fmt.Println("[SUCCESS] all best ", movesNumber, " moves have been generated. ", bestmvs)
+
+		puzzle := data.Puzzle{
+			ID: strconv.Itoa(id),
+			FEN: FEN,
+			BestMoves: bestmvs,
+			GenTime: strconv.Itoa(int(time.Now().UnixNano())),
+			SolveTime: "",
+			MatchLink: game.GetTagPair("Site").Value,
+			SeenCount: 0,
+			FirstSeenTime: "",
+		}
+		fmt.Println("[SUCCESS] generate puzzle " ,puzzle.String())
+
+		err := utils.SendToStore(puzzle)
+		if err != nil {
+			fmt.Println(err)	
+		}
+		time.Sleep(2 * time.Second)
 	}
-	fmt.Println("[SUCCESS] all best ", movesNumber, " moves have been generated. ", bestmvs)
-
-	puzzle := data.Puzzle{
-		ID: strconv.Itoa(id),
-		FEN: FEN,
-		BestMoves: bestmvs,
-		GenTime: strconv.Itoa(int(time.Now().UnixNano())),
-		SolveTime: "",
-		MatchLink: game.GetTagPair("Site").Key,
-		SeenCount: 0,
-		FirstSeenTime: "",
-	}
-	fmt.Println("[SUCCESS] generate puzzle " ,puzzle.String())
-
-	
 }

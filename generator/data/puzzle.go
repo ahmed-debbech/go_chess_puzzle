@@ -2,6 +2,8 @@ package data;
 
 import (
 	"strconv"
+	"encoding/json"
+
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/config"
 )
 
@@ -18,4 +20,8 @@ type Puzzle struct {
 
 func (p Puzzle) String() string{
 	return p.ID + " FEN: " + p.FEN + " BestMove: " + strconv.Itoa(len(p.BestMoves)) + " GenTime: " + p.GenTime + " SolveTime: " + p.SolveTime + " MatchLink: " + p.MatchLink + " SeenCount: " +strconv.Itoa(p.SeenCount) + " FirstSeenTime: " + p.FirstSeenTime;
+}
+
+func (p Puzzle) ToJson() ([]byte, error){
+	return json.Marshal(p)
 }
