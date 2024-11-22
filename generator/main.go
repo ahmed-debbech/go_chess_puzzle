@@ -77,7 +77,6 @@ func main() {
 			FirstSeenTime: "",
 		}
 		fmt.Println("[SUCCESS] generate puzzle " ,puzzle.String())
-
 		err := utils.SendToStore(puzzle)
 		if err != nil {
 			fmt.Println(err)	
