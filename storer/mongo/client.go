@@ -3,12 +3,23 @@ package mongo
 import (
 	"context"
 	"fmt"
+	"os"
+	"strings"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var uri string = readCreds()
 
+func readCreds() string{
+	data, err := os.ReadFile("mongo/creds")
+	if err != nil {
+		panic("[ERROR] no creds file")
+	}
+	return strings.Split(string(data), "\n")[0]
+}
 
 func Client() {
 
