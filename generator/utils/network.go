@@ -17,7 +17,7 @@ func SendToStore(puzzle data.Puzzle) (error){
 		return err
 	}else{
 		fmt.Println("[SUCCESS] puzzle generated to json ", string(jsonPuzzle))
-		req, err := http.NewRequest("POST", "http://localhost:3000/api/accept", bytes.NewReader(jsonPuzzle))
+		req, err := http.NewRequest("POST", "http://localhost:5503/accept", bytes.NewReader(jsonPuzzle))
 		client := http.Client{Timeout: 10 * time.Second}
 		res, err := client.Do(req)
 		if err != nil {
