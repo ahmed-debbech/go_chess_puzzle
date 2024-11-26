@@ -1,5 +1,9 @@
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241124222908-b264109e124b h1:GOxROtnzoogzUNksyTxWtzGWZxYCTlKiny5iFfJyY1w=
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241124222908-b264109e124b/go.mod h1:O0flTDeoR/1EiJnzsJHM+dYsfhoLLLMprOLa9va+ukQ=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241125160307-de18768df263 h1:nmaw/ooOiHAJ3Nb3tnOZyL6hYx2hZZw8Z7EpPNV7YdA=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241125160307-de18768df263/go.mod h1:O0flTDeoR/1EiJnzsJHM+dYsfhoLLLMprOLa9va+ukQ=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241126124736-c77345dbf998 h1:iZaFloRkuQ0L70dinX4sCuFHkqxGqxcoE4MqgwQ8zKw=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241126124736-c77345dbf998/go.mod h1:O0flTDeoR/1EiJnzsJHM+dYsfhoLLLMprOLa9va+ukQ=
 github.com/golang/snappy v0.0.4 h1:yAGX7huGHXlcLOEtBnF4w7FQwA26wojNCwOYAEhLjQM=
 github.com/golang/snappy v0.0.4/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
 github.com/klauspost/compress v1.13.6 h1:P76CopJELS0TiO2mebmnzgWaajssP/EszplttgQxcgc=

@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/ahmed-debbech/go_chess_puzzle/generator/data"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var uri string = readCreds();
@@ -24,6 +27,22 @@ func readCreds() string{
 
 func Init() {
 	client = oneShotClient()
+}
+
+func InsertPuzzle(puzzle data.Puzzle) string {
+	col := client.Database("official").Collection("puzzles")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	res, err := col.InsertOne(ctx, puzzle)
+	
+	if err != nil {
+		fmt.Println("[ERROR] puzzle ", puzzle.ID ," could not be saved in mongo because: ", err)
+		return ""
+	}
+	fmt.Println("[SUCCESS] saved puzzle ", puzzle.ID, " into mongo ", res.InsertedID)
+	return res.InsertedID.(primitive.ObjectID).String()
 }
 
 func oneShotClient() *mongo.Client {

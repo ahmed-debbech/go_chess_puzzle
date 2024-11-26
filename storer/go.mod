@@ -5,7 +5,7 @@ go 1.23.2
 require go.mongodb.org/mongo-driver v1.17.1
 
 require (
-	github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241124222908-b264109e124b // indirect
+	github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241126124736-c77345dbf998 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
