@@ -20,7 +20,7 @@ func main() {
 
     fmt.Println("[SUCCESS] Server Up and Running")
     
-    err := http.ListenAndServe(":5500", nil)
+    err := http.ListenAndServe(":5503", nil)
     if err != nil {
         fmt.Println("[ERROR] could not start web server")
         os.Exit(1) 
