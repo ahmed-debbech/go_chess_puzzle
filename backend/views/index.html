@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  style="display: flex;justify-content: center;align-items: center;">
 
 <head>
   <meta charset="UTF-8">
@@ -31,15 +31,16 @@
   <!-- /END GA -->
 </head>
 
-<body class="layout-3">
+<body style="background-color: #E4E0E1;" class="layout-3">
   <div id="app">
     <div class="main-wrapper container">
       <div class="navbar-bg"></div>
       <nav class="navbar navbar-expand-lg main-navbar">
-        <a href="index.html" class="navbar-brand sidebar-gone-hide">PICHESS <3< /a>
+        <a href="index.html" class="navbar-brand sidebar-gone-hide">PICHESS </a>
             <div class="nav-collapse">
               <a class="sidebar-gone-show nav-collapse-toggle nav-link" href="#">
-                <i class="fas fa-ellipsis-v"></i>
+                <!-- <i class="fas fa-ellipsis-v"></i>-->
+                <h2>PICHESS</h2>
               </a>
               <ul class="navbar-nav">
                 <li class="nav-item active"><a href="#" class="nav-link"></a></li>
@@ -64,8 +65,8 @@
             <p class="section-lead"></p>
             
             <div class="row">
-              <div class="col-12">
-                <div id="board1" style="margin: auto; width: 400px"></div>
+              <div class="col-12" >
+                <div id="board1" style="margin: auto; width: auto; position: relative; box-sizing: border-box;"></div>
               </div>
             </div>
             <div class="row">
@@ -106,7 +107,7 @@
       </div>
       <footer class="main-footer">
         <div class="footer-left">
-          Copyright &copy; 2024 <div class="bullet"></div> Made with love By <a href="https://x.com/AhmedDebb">Ahmed
+          Copyright &copy; 2024 <div class="bullet"></div> Made with love By <a target="_blank" href="https://x.com/AhmedDebb">Ahmed
             Debbech</a>
         </div>
         <div class="footer-right">
@@ -119,6 +120,20 @@
   <script src="assets/js/chessboard-1.0.0.js"></script>
   <script>
     var fen = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
+
+    function onDragStart(source, piece, position, orientation){
+      event.preventDefault(); 
+      if ((orientation === 'white' && piece.search(/^w/) === -1) ||
+          (orientation === 'black' && piece.search(/^b/) === -1)) {
+        
+        onDrop()
+        return false
+      }
+    }
+    function onDrop(){
+      document.body.style.overflow = '';
+    }
+
     var config = {
       orientation: 'black',
       position: fen,
@@ -126,7 +141,10 @@
       dropOffBoard: 'snapback',
       moveSpeed: 'slow',
       snapbackSpeed: 500,
+      onDragStart: onDragStart,
       snapSpeed: 100,
+      onDrop: onDrop,
+
     }
     var board = Chessboard('board1', config)
     setTimeout(()=>{
