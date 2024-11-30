@@ -52,6 +52,13 @@ func main() {
 		//fmt.Println(gameWithRandPos.Position().Board().Draw())
 
 		FEN := chess.GenerateFen(gameWithRandPos)
+		whosPlaying := 0;
+		if gameWithRandPos.Position().Turn().Name() == "Black" {
+			whosPlaying = 0
+		}else{
+			whosPlaying = 1
+		}
+
 		fmt.Println(FEN)
 
 		movesNumber := config.BestMovesNumber
@@ -71,6 +78,7 @@ func main() {
 			FEN: FEN,
 			BestMoves: bestmvs,
 			GenTime: strconv.Itoa(int(time.Now().UnixNano())),
+			CurrentPlayer: whosPlaying,
 			SolveCount: 0,
 			MatchLink: game.GetTagPair("Site").Value,
 			SeenCount: 0,

@@ -12,6 +12,7 @@ type Puzzle struct {
 	FEN string
 	BestMoves [config.BestMovesNumber]string
 	GenTime string
+	CurrentPlayer int
 	SolveCount int
 	MatchLink string
 	SeenCount int
@@ -19,7 +20,7 @@ type Puzzle struct {
 }
 
 func (p Puzzle) String() string{
-	return p.ID + " FEN: " + p.FEN + " BestMove: " + strconv.Itoa(len(p.BestMoves)) + " GenTime: " + p.GenTime + " SolveCount: " + strconv.Itoa(p.SolveCount) + " MatchLink: " + p.MatchLink + " SeenCount: " +strconv.Itoa(p.SeenCount) + " FirstSeenTime: " + p.FirstSeenTime;
+	return p.ID + " FEN: " + p.FEN + " BestMove: " + strconv.Itoa(len(p.BestMoves)) + " GenTime: " + p.GenTime + " CurrentPlayer: "+ strconv.Itoa(p.CurrentPlayer)  +" SolveCount: " + strconv.Itoa(p.SolveCount) + " MatchLink: " + p.MatchLink + " SeenCount: " +strconv.Itoa(p.SeenCount) + " FirstSeenTime: " + p.FirstSeenTime;
 }
 
 func (p Puzzle) ToJson() ([]byte, error){
