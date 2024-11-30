@@ -71,12 +71,12 @@ func main() {
 			FEN: FEN,
 			BestMoves: bestmvs,
 			GenTime: strconv.Itoa(int(time.Now().UnixNano())),
-			SolveTime: "",
+			SolveCount: 0,
 			MatchLink: game.GetTagPair("Site").Value,
 			SeenCount: 0,
 			FirstSeenTime: "",
 		}
-		fmt.Println("[SUCCESS] generate puzzle " ,puzzle.String())
+		fmt.Println("[SUCCESS] generated puzzle " ,puzzle.String())
 		err := utils.SendToStore(puzzle)
 		if err != nil {
 			fmt.Println(err)	
