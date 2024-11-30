@@ -29,12 +29,10 @@ func rawToPuzzle(dat map[string]interface{}) (data.Puzzle){
 	strSlice := make([]string, len(dat["BestMoves"].([]interface{})))
 	var strArray [config.BestMovesNumber]string
     for i, v := range dat["BestMoves"].([]interface{}) {
-		fmt.Println("lll", v)
         strSlice[i], _ = v.(string)
     }	
 
 	for i:=0;i<config.BestMovesNumber; i++ {
-		fmt.Println("vv", i)
 		strArray[i] = strSlice[i]
 	}
 	fmt.Println(strArray)
@@ -43,7 +41,7 @@ func rawToPuzzle(dat map[string]interface{}) (data.Puzzle){
 		FEN: dat["FEN"].(string),
 		BestMoves: strArray,
 		GenTime: dat["GenTime"].(string),
-		SolveTime: dat["SolveTime"].(string),
+		SolveCount: int(dat["SolveCount"].(float64)),
 		MatchLink: dat["MatchLink"].(string),
 		SeenCount: int(dat["SeenCount"].(float64)),
 		FirstSeenTime: dat["FirstSeenTime"].(string),
