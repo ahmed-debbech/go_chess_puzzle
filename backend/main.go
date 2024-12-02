@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"html/template"
+	"github.com/ahmed-debbech/go_chess_puzzle/generator/data"
+	"github.com/ahmed-debbech/go_chess_puzzle/backend/mongo"
 )
 
 type Page struct {
@@ -30,11 +32,18 @@ func getPath(title string) string {
 }
 
 
+func getRandomPuzzle() data.Puzzle{
+	dat, _ := mongo.MongoFindRandPuzzle()
+	fmt.Println(dat)
+	return dat 
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
 
 	p := loadPage("index.html")
 	if p == nil { return }
 
+	_ = getRandomPuzzle()
 	t, err := template.ParseFiles(getPath("index.html"))
 	if err != nil { fmt.Println("[ERROR] could not render page", err); return }
 	t.Execute(w, p)
@@ -42,6 +51,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func main(){
 	fmt.Println("Hello world")
+
+
+	mongo.Init()
+    defer mongo.Destroy()
+
 
 	http.HandleFunc("/", handler)
 	http.Handle(
