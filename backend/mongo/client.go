@@ -30,41 +30,34 @@ func Init() {
 	client = oneShotClient()
 }
 
-func MongoFindRandPuzzle() (data.Puzzle, error){
+func MongoFindRandPuzzle() (*data.Puzzle, error){
+	
+    defer func() {
+        if r := recover(); r != nil {
+            fmt.Println("Recovered. Error:\n", r)
+        }
+    }()
+
 	coll := client.Database("official").Collection("puzzles")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	var result data.Puzzle
+	var result []data.Puzzle
 	filter := mongo.Pipeline{{{Key: "$sample", Value: bson.D{{Key: "size", Value: 1}}}} }
 
-	cursor, err := coll.Aggregate(ctx, filter).Decode(&result)
+	cursor, err := coll.Aggregate(ctx,filter)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			fmt.Println("[ERROR] the query succeeded but it seems like it is empty")
-			return result, errors.New("No Puzzles found")
-		}
-		fmt.Println("[ERROR] something went wrong while finding a random puzzle:", err)
-		return result, errors.New("Could not find random puzzle")
+		fmt.Println("[ERROR] could not load random puzzle from database because:" , err)
+		return nil, errors.New("could not load random puzzle from database")
 	}
-	defer cursor.Close(ctx)
-
-	/*for cursor.Next(ctx) {
-		var result bson.M
-		if err := cursor.Decode(&result); err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(result)
-	}*/
-
-	var results []bson.M
-	if err = cursor.All(context.TODO(), &results); err != nil {
-		panic(err)
+	if err = cursor.All(ctx, &result); err != nil {
+		fmt.Println("[ERROR] could not extract random puzzle from result because:", err)
+		return nil, errors.New("could not extract random puzzle from result")
 	}
-	fmt.Printf("Average price of %v \n", result["_id"])
 
-	return result, nil
+	fmt.Println("[SUCCESS] found random puzzle with id:", result[0].ID)
+	return &result[0], nil
 }
 
 func oneShotClient() *mongo.Client {
@@ -76,7 +69,7 @@ func oneShotClient() *mongo.Client {
 	if err != nil {
 		panic(err)
 	}
-	// Send a ping to confirm a successful connection
+
 	var result bson.M
 	if err := client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Decode(&result); err != nil {
 		panic(err)
