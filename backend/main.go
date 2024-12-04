@@ -30,17 +30,27 @@ func getPath(title string) string {
 	return pwd + "/views/" + title
 }
 
+func loadPuzzleHandle(w http.ResponseWriter, r *http.Request){
+	if(r.Method != "GET"){http.Error(w, "Invalid", http.StatusMethodNotAllowed); return;}
 
-func rootHandle(w http.ResponseWriter, r *http.Request) {
-
-	p := loadPage("index.html")
-	if p == nil { return }
-
-	_, err := logic.GetRandomPuzzle()
+	puzzle, err := logic.GetRandomPuzzle()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
+	serial, err := logic.PuzzleToJson(*puzzle)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		
+		w.Write([]byte(`{"error": "`+err.Error()+`"}`))
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(serial)
+}
+func rootHandle(w http.ResponseWriter, r *http.Request) {
+	p := loadPage("index.html")
+	if p == nil { return }
+
 	t, err := template.ParseFiles(getPath("index.html"))
 	if err != nil { fmt.Println("[ERROR] could not render page", err); return }
 	t.Execute(w, p)
@@ -53,7 +63,6 @@ func main(){
 	logic.ConnectDb()
 	defer logic.StopDb()
 
-	http.HandleFunc("/", rootHandle)
 	http.Handle(
 		"/assets/", 
 		http.StripPrefix(
@@ -61,6 +70,9 @@ func main(){
 			http.FileServer(http.Dir("./views/assets/")),
 		),
 	)
+	http.HandleFunc("/", rootHandle)
+	http.HandleFunc("/load", loadPuzzleHandle)
+
 
     fmt.Println(http.ListenAndServe(":5530", nil))
 }

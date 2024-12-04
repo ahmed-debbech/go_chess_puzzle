@@ -14,3 +14,11 @@ func GetRandomPuzzle() (*data.Puzzle, error){
 	}
 	return dat, nil
 }
+
+func PuzzleToJson(puzzle data.Puzzle) ([]byte, error){
+	dat, err := puzzle.ToJson()
+	if err != nil {
+		return []byte{}, errors.New("Could serialize puzzle to JSON")
+	}
+	return dat, nil
+}
