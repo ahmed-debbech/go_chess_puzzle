@@ -15,6 +15,9 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/components.css">
+
+  <script src="assets/js/moment.js"></script>
+
   <!-- Start GA -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
   <script>
@@ -58,7 +61,7 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Puzzle ID: 5858</h1>
+            <h1>Puzzle ID: <span id="puzzle_id">5858</span></h1>
           </div>
 
           <div class="section-body">
@@ -73,8 +76,9 @@
               <div style="margin: auto;" class="col-12">
                 <br>
                 <div  class="form-group">
-                  <h6>Seen 5 times</h6>
-                  <h6>Generated on Nov, 28th 2024</h6>
+                  <h6>Seen <span id="seen_times">-</span> times</h6>
+                  <h6>Generated on <span id="gen_time">-</span></h6>
+                  <h6>Solved <span id="sol_times">-</span> times</h6>
                 </div>
               </div>
             </div>
@@ -118,6 +122,7 @@
   </div>
 
   <script src="assets/js/chessboard-1.0.0.js"></script>
+
   <script>
     var fen = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
 
@@ -147,9 +152,22 @@
 
     }
     var board = Chessboard('board1', config)
-    setTimeout(()=>{
-      board.move('b5-c4')
-    },3000)
+
+    $.ajax({
+      url: '/load',
+      type: "GET",
+      success: function (data) {
+        console.log(data)
+        $("#puzzle_id").html(data.ID)
+        $("#gen_time").html(moment.unix(data.GenTime.substring(0, data.GenTime.length-9)).format('MMMM Do YYYY, h:mm:ss a'))
+        $("#seen_times").html(data.SeenCount)
+        $("#sol_times").html(data.SolveCount)
+      },
+
+      error: function (error) {
+          console.log(`Error ${error}`);
+      }
+    });
   </script>
 
   <!-- General JS Scripts -->
