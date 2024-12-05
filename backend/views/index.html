@@ -124,7 +124,6 @@
   <script src="assets/js/chessboard-1.0.0.js"></script>
 
   <script>
-    var fen = 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R'
 
     function onDragStart(source, piece, position, orientation){
       event.preventDefault(); 
@@ -139,19 +138,6 @@
       document.body.style.overflow = '';
     }
 
-    var config = {
-      orientation: 'black',
-      position: fen,
-      draggable: true,
-      dropOffBoard: 'snapback',
-      moveSpeed: 'slow',
-      snapbackSpeed: 500,
-      onDragStart: onDragStart,
-      snapSpeed: 100,
-      onDrop: onDrop,
-
-    }
-    var board = Chessboard('board1', config)
 
     $.ajax({
       url: '/load',
@@ -162,6 +148,29 @@
         $("#gen_time").html(moment.unix(data.GenTime.substring(0, data.GenTime.length-9)).format('MMMM Do YYYY, h:mm:ss a'))
         $("#seen_times").html(data.SeenCount)
         $("#sol_times").html(data.SolveCount)
+
+        var fen = data.FEN
+
+        var config = {
+          orientation: 'black',
+          position: fen,
+          draggable: true,
+          dropOffBoard: 'snapback',
+          moveSpeed: 'slow',
+          snapbackSpeed: 500,
+          onDragStart: onDragStart,
+          snapSpeed: 100,
+          onDrop: onDrop,
+
+        }
+        var board = Chessboard('board1', config)
+
+        setTimeout(() => {
+          let mov = data.BestMoves[0].split("").toSpliced(2,0,"-").join("")
+          console.log(mov)
+          board.move(mov)
+        }, 3000)
+
       },
 
       error: function (error) {
