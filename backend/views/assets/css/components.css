@@ -763,7 +763,6 @@ tr:first-child > td > .fc-day-grid-event {
 .profile-widget .profile-widget-header {
   display: inline-block;
   width: 100%;
-  margin-bottom: 10px;
 }
 .profile-widget .profile-widget-items {
   display: flex;

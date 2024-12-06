@@ -9,7 +9,6 @@
   <!-- General CSS Files -->
   <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/modules/fontawesome/css/all.min.css">
-
   <!-- CSS Libraries -->
 
   <!-- Template CSS -->
@@ -17,6 +16,7 @@
   <link rel="stylesheet" href="assets/css/components.css">
 
   <script src="assets/js/moment.js"></script>
+  <script src="assets/js/local_chess.js"></script>
 
   <!-- Start GA -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
@@ -28,6 +28,11 @@
     gtag('config', 'UA-94034622-3');
   </script>
 
+  <style>
+    .highlight-move {
+      box-shadow: inset 0 0 3px 3px yellow;
+    }
+  </style>
   <link rel="stylesheet" href="assets/css/chessboard-1.0.0.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -61,7 +66,7 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Puzzle ID: <span id="puzzle_id">5858</span></h1>
+            <h1>Puzzle ID: <span id="puzzle_id">-</span></h1>
           </div>
 
           <div class="section-body">
@@ -73,12 +78,29 @@
               </div>
             </div>
             <div class="row">
-              <div style="margin: auto;" class="col-12">
-                <br>
-                <div  class="form-group">
-                  <h6>Seen <span id="seen_times">-</span> times</h6>
-                  <h6>Generated on <span id="gen_time">-</span></h6>
-                  <h6>Solved <span id="sol_times">-</span> times</h6>
+              <div  class="col-12 col-md-12 col-lg-12">
+                <div class="card profile-widget">
+                  <div class="profile-widget-header">      
+                    <div class="profile-widget-description">
+                      <span  id="who_to_move_white" >⚪ White to move  </span>
+                      <span  id="who_to_move_black" >⚫ Black to move  </span>
+                    </div>               
+                    <div class="profile-widget-items">
+                      <div class="profile-widget-item">
+                        <div class="profile-widget-item-label">Seen</div>
+                        <div class="profile-widget-item-value"><span id="seen_times">-</span></div>
+                      </div>
+                      <div class="profile-widget-item">
+                        <div class="profile-widget-item-label">Solved</div>
+                        <div class="profile-widget-item-value"><span id="sol_times">-</span></div>
+                      </div>
+                      <div class="profile-widget-item">
+                        <div class="profile-widget-item-label">Generated</div>
+                        <div class="profile-widget-item-value"><span style="font-size: x-small;" id="gen_time">-</span></div>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -125,19 +147,6 @@
 
   <script>
 
-    function onDragStart(source, piece, position, orientation){
-      event.preventDefault(); 
-      if ((orientation === 'white' && piece.search(/^w/) === -1) ||
-          (orientation === 'black' && piece.search(/^b/) === -1)) {
-        
-        onDrop()
-        return false
-      }
-    }
-    function onDrop(){
-      document.body.style.overflow = '';
-    }
-
 
     $.ajax({
       url: '/load',
@@ -145,31 +154,11 @@
       success: function (data) {
         console.log(data)
         $("#puzzle_id").html(data.ID)
-        $("#gen_time").html(moment.unix(data.GenTime.substring(0, data.GenTime.length-9)).format('MMMM Do YYYY, h:mm:ss a'))
+        $("#gen_time").html(moment.unix(data.GenTime.substring(0, data.GenTime.length-9)).format('DD/MM/YYYY - HH:mm'))
         $("#seen_times").html(data.SeenCount)
         $("#sol_times").html(data.SolveCount)
 
-        var fen = data.FEN
-
-        var config = {
-          orientation: 'black',
-          position: fen,
-          draggable: true,
-          dropOffBoard: 'snapback',
-          moveSpeed: 'slow',
-          snapbackSpeed: 500,
-          onDragStart: onDragStart,
-          snapSpeed: 100,
-          onDrop: onDrop,
-
-        }
-        var board = Chessboard('board1', config)
-
-        setTimeout(() => {
-          let mov = data.BestMoves[0].split("").toSpliced(2,0,"-").join("")
-          console.log(mov)
-          board.move(mov)
-        }, 3000)
+        buildBoard(data);
 
       },
 
