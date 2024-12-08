@@ -1,21 +1,6 @@
 var board 
 var movesCount = 0
 
-function highlight(start, end) {
-  $("#board1").find('.square-' + start )
-  .addClass('highlight-move')
-  $("#board1").find('.square-' + end )
-  .addClass('highlight-move')
-}
-
-function unHighlight(start, end) {
-  $("#board1").find('.square-' + start )
-  .removeClass('highlight-move')
-  $("#board1").find('.square-' + end )
-  .removeClass('highlight-move')
-}
-
-
 function buildBoard(data){
 
 
@@ -45,16 +30,22 @@ function buildBoard(data){
 
     function onDrop(source, target, piece, newPos, oldPos, orientation){
       document.body.style.overflow = '';
-
+      
       if(isRightMove(data.BestMoves[movesCount], source+target)){
         unHighlight(last_move_cell_start, last_move_cell_end)
         last_move_cell_start = source
         last_move_cell_end = target
         highlight(last_move_cell_start, last_move_cell_end)
 
-        movesCount++
-        computerPlays(adaptMove(data.BestMoves[movesCount]))
+        updateStatus(1)
+
+        setTimeout(() => {
+          unHighlight(last_move_cell_start, last_move_cell_end)
+          movesCount++
+          computerPlays(adaptMove(data.BestMoves[movesCount]))
+        },500)
       }else{
+        updateStatus(-1)
         return 'snapback'
       }
     }
@@ -75,10 +66,39 @@ function buildBoard(data){
     board = Chessboard('board1', config)
 
     setTimeout(() => {
+      updateStatus(0)
       let mov = adaptMove(data.BestMoves[movesCount])
       console.log(mov)
       computerPlays(mov)
     }, 500)
+}
+
+function updateStatus(mode){
+  if(mode == 0){
+    $("#status").html("Play a move..")
+  }
+  if(mode == 1){
+    $("#status").html("Correct! keep going..")
+    $("#status").css({"color" : "#15a51d"})
+  }
+  if(mode == -1){
+    $("#status").html("Wrong! try again..")
+    $("#status").css({"color" : "#dc3545"})
+  }
+}
+
+function highlight(start, end) {
+  $("#board1").find('.square-' + start )
+  .addClass('highlight-move')
+  $("#board1").find('.square-' + end )
+  .addClass('highlight-move')
+}
+
+function unHighlight(start, end) {
+  $("#board1").find('.square-' + start )
+  .removeClass('highlight-move')
+  $("#board1").find('.square-' + end )
+  .removeClass('highlight-move')
 }
 
 function adaptMove(move){
@@ -88,8 +108,6 @@ function isRightMove(move1, move2){
   return move1 == move2
 }
 function computerPlays(move){
-  unHighlight(last_move_cell_start, last_move_cell_end)
-
   last_move_cell_start = move[0]
   last_move_cell_end = move[1]
   highlight(last_move_cell_start, last_move_cell_end)
