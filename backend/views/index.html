@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  style="display: flex;justify-content: center;align-items: center;">
+<html lang="en" style="display: flex;justify-content: center;align-items: center;">
 
 <head>
   <meta charset="UTF-8">
@@ -22,7 +22,10 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
     gtag('js', new Date());
 
     gtag('config', 'UA-94034622-3');
@@ -45,17 +48,17 @@
       <div class="navbar-bg"></div>
       <nav class="navbar navbar-expand-lg main-navbar">
         <a href="index.html" class="navbar-brand sidebar-gone-hide">PICHESS </a>
-            <div class="nav-collapse">
-              <a class="sidebar-gone-show nav-collapse-toggle nav-link" href="#">
-                <!-- <i class="fas fa-ellipsis-v"></i>-->
-                <h2>PICHESS</h2>
-              </a>
-              <ul class="navbar-nav">
-                <li class="nav-item active"><a href="#" class="nav-link"></a></li>
-                <li class="nav-item"><a href="#" class="nav-link"></a></li>
-                <li class="nav-item"><a href="#" class="nav-link"></a></li>
-              </ul>
-            </div>
+        <div class="nav-collapse">
+          <a class="sidebar-gone-show nav-collapse-toggle nav-link" href="#">
+            <!-- <i class="fas fa-ellipsis-v"></i>-->
+            <h2>PICHESS</h2>
+          </a>
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a href="#" class="nav-link"></a></li>
+            <li class="nav-item"><a href="#" class="nav-link"></a></li>
+            <li class="nav-item"><a href="#" class="nav-link"></a></li>
+          </ul>
+        </div>
       </nav>
 
       <nav class="navbar navbar-secondary navbar-expand-lg">
@@ -71,20 +74,25 @@
 
           <div class="section-body">
             <p class="section-lead"></p>
-            
+
             <div class="row">
-              <div class="col-12" >
+              <div class="col-12">
                 <div id="board1" style="margin: auto; width: auto; position: relative; box-sizing: border-box;"></div>
               </div>
             </div>
             <div class="row">
-              <div  class="col-12 col-md-12 col-lg-12">
+              <div class="col-12 col-md-12 col-lg-12">
                 <div class="card profile-widget">
-                  <div class="profile-widget-header">      
+                  <div class="profile-widget-header">
                     <div class="profile-widget-description">
-                      <span  id="who_to_move_white" >⚪ White to move  </span>
-                      <span  id="who_to_move_black" >⚫ Black to move  </span>
-                    </div>               
+                      <div class="profile-widget-name">
+                        <span id="who_to_move_white">⚪ White to move </span>
+                        <span id="who_to_move_black">⚫ Black to move </span>
+                        <div class="text-muted d-inline font-weight-normal">
+                          <div class="slash"></div> <span id="status" ></span>
+                        </div>
+                      </div>
+                    </div>
                     <div class="profile-widget-items">
                       <div class="profile-widget-item">
                         <div class="profile-widget-item-label">Seen</div>
@@ -96,7 +104,8 @@
                       </div>
                       <div class="profile-widget-item">
                         <div class="profile-widget-item-label">Generated</div>
-                        <div class="profile-widget-item-value"><span style="font-size: x-small;" id="gen_time">-</span></div>
+                        <div class="profile-widget-item-value"><span style="font-size: x-small;" id="gen_time">-</span>
+                        </div>
                       </div>
                     </div>
 
@@ -106,34 +115,35 @@
             </div>
             <div class="row">
               <div class="col-12">
-              <div class="form-group">
-                <label class="form-label">Tools</label>
-                <div class="selectgroup w-100">
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="50" class="selectgroup-input" >
-                    <span class="selectgroup-button">Reset</span>
-                  </label>
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="100" class="selectgroup-input">
-                    <span class="selectgroup-button">Hint</span>
-                  </label>
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="150" class="selectgroup-input">
-                    <span class="selectgroup-button">New</span>
-                  </label>
-                  <label class="selectgroup-item">
-                    <input type="radio" name="value" value="200" class="selectgroup-input">
-                    <span class="selectgroup-button">Original</span>
-                  </label>
+                <div class="form-group">
+                  <label class="form-label">Tools</label>
+                  <div class="selectgroup w-100">
+                    <label class="selectgroup-item">
+                      <input type="radio" name="value" value="50" class="selectgroup-input">
+                      <span class="selectgroup-button">Reset</span>
+                    </label>
+                    <label class="selectgroup-item">
+                      <input type="radio" name="value" value="100" class="selectgroup-input">
+                      <span class="selectgroup-button">Hint</span>
+                    </label>
+                    <label class="selectgroup-item">
+                      <input type="radio" name="value" value="150" class="selectgroup-input">
+                      <span class="selectgroup-button">New</span>
+                    </label>
+                    <label class="selectgroup-item">
+                      <input type="radio" name="value" value="200" class="selectgroup-input">
+                      <span class="selectgroup-button">Original</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
         </section>
       </div>
       <footer class="main-footer">
         <div class="footer-left">
-          Copyright &copy; 2024 <div class="bullet"></div> Made with love By <a target="_blank" href="https://x.com/AhmedDebb">Ahmed
+          Copyright &copy; 2024 <div class="bullet"></div> Made with love By <a target="_blank"
+            href="https://x.com/AhmedDebb">Ahmed
             Debbech</a>
         </div>
         <div class="footer-right">
@@ -146,24 +156,39 @@
   <script src="assets/js/chessboard-1.0.0.js"></script>
 
   <script>
-
-
     $.ajax({
       url: '/load',
       type: "GET",
       success: function (data) {
         console.log(data)
         $("#puzzle_id").html(data.ID)
-        $("#gen_time").html(moment.unix(data.GenTime.substring(0, data.GenTime.length-9)).format('DD/MM/YYYY - HH:mm'))
+        $("#gen_time").html(moment.unix(data.GenTime.substring(0, data.GenTime.length - 9)).format(
+          'DD/MM/YYYY - HH:mm'))
         $("#seen_times").html(data.SeenCount)
         $("#sol_times").html(data.SolveCount)
 
+        data = {
+    "ID": "41396",
+    "FEN": "r3r1k1/pp3pp1/2n2N1p/q4b2/8/5NQ1/PPP3PP/2KR3R b - - 4 18",
+    "BestMoves": [
+        "g8h8",
+        "f6e8",
+        "a8e8",
+        "a2a3"
+    ],
+    "GenTime": "1732973977063127551",
+    "CurrentPlayer": 0,
+    "SolveCount": 0,
+    "MatchLink": "https://lichess.org/99gp00os",
+    "SeenCount": 0,
+    "FirstSeenTime": ""
+}
         buildBoard(data);
 
       },
 
       error: function (error) {
-          console.log(`Error ${error}`);
+        console.log(`Error ${error}`);
       }
     });
   </script>
