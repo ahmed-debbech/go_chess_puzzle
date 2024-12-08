@@ -1,4 +1,24 @@
+var board 
+var movesCount = 0
+
+function highlight(start, end) {
+  $("#board1").find('.square-' + start )
+  .addClass('highlight-move')
+  $("#board1").find('.square-' + end )
+  .addClass('highlight-move')
+}
+
+function unHighlight(start, end) {
+  $("#board1").find('.square-' + start )
+  .removeClass('highlight-move')
+  $("#board1").find('.square-' + end )
+  .removeClass('highlight-move')
+}
+
+
 function buildBoard(data){
+
+
     orient = 'white'
     if(data.CurrentPlayer == 1){
         orient = 'black'
@@ -19,12 +39,24 @@ function buildBoard(data){
         return false
       }
     }
-    function onDrop(){
+
+    last_move_cell_start = ""
+    last_move_cell_end = ""
+
+    function onDrop(source, target, piece, newPos, oldPos, orientation){
       document.body.style.overflow = '';
-    }
-    function onMoveEnd(){
-        $("#board1").find('.square-' + squareToHighlight)
-        .addClass('highlight-move')
+
+      if(isRightMove(data.BestMoves[movesCount], source+target)){
+        unHighlight(last_move_cell_start, last_move_cell_end)
+        last_move_cell_start = source
+        last_move_cell_end = target
+        highlight(last_move_cell_start, last_move_cell_end)
+
+        movesCount++
+        computerPlays(adaptMove(data.BestMoves[movesCount]))
+      }else{
+        return 'snapback'
+      }
     }
 
     var fen = data.FEN
@@ -34,19 +66,34 @@ function buildBoard(data){
       position: fen,
       draggable: true,
       dropOffBoard: 'snapback',
-      moveSpeed: 'slow',
+      moveSpeed: 'fast',
       snapbackSpeed: 100,
       onDragStart: onDragStart,
       snapSpeed: 100,
-      onDrop: onDrop,
-      onMoveEnd: onMoveEnd
-
+      onDrop: onDrop
     }
-    var board = Chessboard('board1', config)
+    board = Chessboard('board1', config)
 
     setTimeout(() => {
-      let mov = data.BestMoves[0].split("").toSpliced(2,0,"-").join("")
+      let mov = adaptMove(data.BestMoves[movesCount])
       console.log(mov)
-      board.move(mov)
+      computerPlays(mov)
     }, 500)
+}
+
+function adaptMove(move){
+  return move.split("").toSpliced(2,0,"-").join("").split('-')
+}
+function isRightMove(move1, move2){
+  return move1 == move2
+}
+function computerPlays(move){
+  unHighlight(last_move_cell_start, last_move_cell_end)
+
+  last_move_cell_start = move[0]
+  last_move_cell_end = move[1]
+  highlight(last_move_cell_start, last_move_cell_end)
+  board.move(move[0]+'-'+move[1])
+  movesCount++
+
 }
