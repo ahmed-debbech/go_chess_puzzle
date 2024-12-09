@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Layout &rsaquo; Top Navigation &mdash; Stisla</title>
+  <title>Pichess</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="assets/modules/bootstrap/css/bootstrap.min.css">
@@ -161,6 +161,8 @@
       type: "GET",
       success: function (data) {
         console.log(data)
+        if(data.ID == undefined) return
+
         $("#puzzle_id").html(data.ID)
         $("#gen_time").html(moment.unix(data.GenTime.substring(0, data.GenTime.length - 9)).format(
           'DD/MM/YYYY - HH:mm'))
@@ -174,7 +176,9 @@
         "g8h8",
         "f6e8",
         "a8e8",
-        "a2a3"
+        "a2a3",
+        "b7b6",
+        "a3a4"
     ],
     "GenTime": "1732973977063127551",
     "CurrentPlayer": 0,

@@ -30,19 +30,29 @@ function buildBoard(data){
 
     function onDrop(source, target, piece, newPos, oldPos, orientation){
       document.body.style.overflow = '';
-      
+
+      if(data.BestMoves.length <= movesCount) {$("#status").html("✅ SOLVED"); return 'snapback';}
+
       if(isRightMove(data.BestMoves[movesCount], source+target)){
         unHighlight(last_move_cell_start, last_move_cell_end)
         last_move_cell_start = source
         last_move_cell_end = target
         highlight(last_move_cell_start, last_move_cell_end)
 
+        if(data.BestMoves.length <= movesCount) return 'snapback'
+
         updateStatus(1)
 
         setTimeout(() => {
           unHighlight(last_move_cell_start, last_move_cell_end)
           movesCount++
+
+          if(data.BestMoves.length <= movesCount)  {$("#status").html("✅ SOLVED"); return;}
+
           computerPlays(adaptMove(data.BestMoves[movesCount]))
+
+          if(data.BestMoves.length <= movesCount)  {$("#status").html("✅ SOLVED"); return;}
+
         },500)
       }else{
         updateStatus(-1)
