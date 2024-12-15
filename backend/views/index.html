@@ -35,6 +35,9 @@
     .highlight-move {
       box-shadow: inset 0 0 3px 3px yellow;
     }
+    .highlight-hint {
+      box-shadow: inset 0 0 3px 3px blue;
+    }
   </style>
   <link rel="stylesheet" href="assets/css/chessboard-1.0.0.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -119,19 +122,19 @@
                   <label class="form-label">Tools</label>
                   <div class="selectgroup w-100">
                     <label class="selectgroup-item">
-                      <input type="radio" name="value" value="50" class="selectgroup-input">
+                      <input onclick="reset()" type="radio" name="value" value="50" class="selectgroup-input">
                       <span class="selectgroup-button">Reset</span>
                     </label>
                     <label class="selectgroup-item">
-                      <input type="radio" name="value" value="100" class="selectgroup-input">
+                      <input onclick="hint()" type="radio" name="value" value="100" class="selectgroup-input">
                       <span class="selectgroup-button">Hint</span>
                     </label>
                     <label class="selectgroup-item">
-                      <input type="radio" name="value" value="150" class="selectgroup-input">
+                      <input onclick="newone()" type="radio" name="value" value="150" class="selectgroup-input">
                       <span class="selectgroup-button">New</span>
                     </label>
                     <label class="selectgroup-item">
-                      <input type="radio" name="value" value="200" class="selectgroup-input">
+                      <input onclick="original()" type="radio" name="value" value="200" class="selectgroup-input">
                       <span class="selectgroup-button">Original</span>
                     </label>
                   </div>
@@ -156,6 +159,10 @@
   <script src="assets/js/chessboard-1.0.0.js"></script>
 
   <script>
+
+    var url_original = ""
+    var dataMatch
+
     $.ajax({
       url: '/load',
       type: "GET",
@@ -169,33 +176,31 @@
         $("#seen_times").html(data.SeenCount)
         $("#sol_times").html(data.SolveCount)
 
-        data = {
-    "ID": "41396",
-    "FEN": "r3r1k1/pp3pp1/2n2N1p/q4b2/8/5NQ1/PPP3PP/2KR3R b - - 4 18",
-    "BestMoves": [
-        "g8h8",
-        "f6e8",
-        "a8e8",
-        "a2a3",
-        "b7b6",
-        "a3a4"
-    ],
-    "GenTime": "1732973977063127551",
-    "CurrentPlayer": 0,
-    "SolveCount": 0,
-    "MatchLink": "https://lichess.org/99gp00os",
-    "SeenCount": 0,
-    "FirstSeenTime": ""
-}
-        buildBoard(data);
+        url_original = data.MatchLink
 
+        buildBoard(data);
+        dataMatch = data
       },
 
       error: function (error) {
         console.log(`Error ${error}`);
       }
     });
-  </script>
+ 
+    function original(){
+      window.open(url_original, '_blank').focus();
+    }
+    function newone(){
+      location.reload()
+    }
+    function reset(){
+      resetBoard()
+      buildBoard(dataMatch);
+    }
+    function hint(){
+      hintPuzzle(dataMatch.BestMoves)
+    }
+ </script>
 
   <!-- General JS Scripts -->
   <script src="assets/modules/jquery.min.js"></script>
