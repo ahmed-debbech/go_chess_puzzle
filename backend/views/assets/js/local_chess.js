@@ -83,9 +83,16 @@ function buildBoard(data){
     }, 500)
 }
 
+function resetBoard(){
+  board = Chessboard('board1')
+  movesCount = 0
+  updateStatus(0)
+}
+
 function updateStatus(mode){
   if(mode == 0){
     $("#status").html("Play a move..")
+    $("#status").css({"color" : ""})
   }
   if(mode == 1){
     $("#status").html("Correct! keep going..")
@@ -117,11 +124,36 @@ function adaptMove(move){
 function isRightMove(move1, move2){
   return move1 == move2
 }
+
+function highlightHint(start, end) {
+  $("#board1").find('.square-' + start )
+  .addClass('highlight-hint')
+  $("#board1").find('.square-' + end )
+  .addClass('highlight-hint')
+}
+function unHighlightHint(start, end) {
+  $("#board1").find('.square-' + start )
+  .removeClass('highlight-hint')
+  $("#board1").find('.square-' + end )
+  .removeClass('highlight-hint')
+}
+
 function computerPlays(move){
   last_move_cell_start = move[0]
   last_move_cell_end = move[1]
   highlight(last_move_cell_start, last_move_cell_end)
   board.move(move[0]+'-'+move[1])
   movesCount++
+
+}
+
+function hintPuzzle(moves){
+
+  highlightHint(adaptMove(moves[movesCount])[0], adaptMove(moves[movesCount])[1])
+  let ss = adaptMove(moves[movesCount])
+
+  setTimeout(() => {
+    unHighlightHint(ss[0], ss[1])
+  },1500)
 
 }
