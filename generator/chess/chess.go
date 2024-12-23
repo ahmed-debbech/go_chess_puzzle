@@ -59,11 +59,14 @@ func MakeMoveAndFEN(game *chess.Game, move string) string{
 func IsGameEligible(game *chess.Game, randPos int) bool {
 
 	//1) check moves number
-	totalMoves := len(game.MoveHistory())
+	totalMoves := len(game.MoveHistory())-1
 	if totalMoves < config.TolaratedNumberOfMoves {return false}
 	
 	//2) check if random move number picked is not out of bounds when running stockfish later
 	if (totalMoves - randPos) < config.BestMovesNumber {return false}
+
+	//3) match has ended either by black/white winning only
+	if game.Method() != chess.Checkmate {return false}
 
 	return true
 }

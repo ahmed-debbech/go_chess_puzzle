@@ -48,10 +48,10 @@ func main() {
 		game := chess.ObjectifyGame(match_content)
 		fmt.Println(game.Position().Board().Draw(), " " , game.GetTagPair("Site"))
 
-		gameWithRandPos, randPosNum := chess.JumpToRandPosition(game)
+		gameWithRandPos, _ := chess.JumpToRandPosition(game.Clone())
 		//fmt.Println(gameWithRandPos.Position().Board().Draw())
 
-		if !chess.IsGameEligible(game, randPosNum) {continue;}
+
 
 		FEN := chess.GenerateFen(gameWithRandPos)
 		whosPlaying := 0;
@@ -69,7 +69,6 @@ func main() {
 		for i:=0; i<movesNumber; i++ {
 			bestmove := engine.GetBestMove(newfen)
 			bestmvs[i] = bestmove
-
 			newfen = chess.MakeMoveAndFEN(gameWithRandPos, bestmove)
 			if newfen == "" { break; }
 		}

@@ -4,12 +4,12 @@ import(
 	"fmt"
 	//"os"
 	//"io"
-	//"strings"
+	"strings"
 
 )
 
 func extractBestMove(str string) (string){
-	return str[9:13]
+	return strings.Split(str, " ")[1]
 }
 
 func GetBestMove(FEN string) (string){

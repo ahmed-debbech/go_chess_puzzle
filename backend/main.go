@@ -59,7 +59,6 @@ func rootHandle(w http.ResponseWriter, r *http.Request) {
 func main(){
 	fmt.Println("Hello world")
 
-
 	logic.ConnectDb()
 	defer logic.StopDb()
 

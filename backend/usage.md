@@ -1,0 +1,3 @@
+go run .
+ - or -
+./exec

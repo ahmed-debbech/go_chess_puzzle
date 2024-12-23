@@ -1,2 +1,1 @@
-* integrate all HTML templates into one single binary executable using embed
 * check that nothing is nil when a request times out
