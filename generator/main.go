@@ -47,9 +47,11 @@ func main() {
 
 		game := chess.ObjectifyGame(match_content)
 		fmt.Println(game.Position().Board().Draw(), " " , game.GetTagPair("Site"))
-		
-		gameWithRandPos := chess.JumpToRandPosition(game)
+
+		gameWithRandPos, randPosNum := chess.JumpToRandPosition(game)
 		//fmt.Println(gameWithRandPos.Position().Board().Draw())
+
+		if !chess.IsGameEligible(game, randPosNum) {continue;}
 
 		FEN := chess.GenerateFen(gameWithRandPos)
 		whosPlaying := 0;

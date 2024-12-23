@@ -5,6 +5,7 @@ import (
 	"strings"
 	"fmt"
 	"math/rand/v2"
+	"github.com/ahmed-debbech/go_chess_puzzle/generator/config"
 )
 
 func ObjectifyGame(pgn string) *chess.Game {
@@ -18,7 +19,7 @@ func ObjectifyGame(pgn string) *chess.Game {
 	return game
 }
 
-func JumpToRandPosition(game *chess.Game) (*chess.Game){
+func JumpToRandPosition(game *chess.Game) (*chess.Game, int){
 	
 	x := rand.IntN(len(game.Moves()))
 	fmt.Println("[SUCCESS] random position set: ", x)
@@ -29,7 +30,7 @@ func JumpToRandPosition(game *chess.Game) (*chess.Game){
 		newG.Move(game.Moves()[i])
 	}
 
-	return newG
+	return newG, x
 }
 
 func GenerateFen(game *chess.Game) string{
@@ -52,4 +53,17 @@ func MakeMoveAndFEN(game *chess.Game, move string) string{
 		fmt.Println("[ERROR] could not make move: ", err)
 	}
 	return game.FEN()
+}
+
+
+func IsGameEligible(game *chess.Game, randPos int) bool {
+
+	//1) check moves number
+	totalMoves := len(game.MoveHistory())
+	if totalMoves < config.TolaratedNumberOfMoves {return false}
+	
+	//2) check if random move number picked is not out of bounds when running stockfish later
+	if (totalMoves - randPos) < config.BestMovesNumber {return false}
+
+	return true
 }
