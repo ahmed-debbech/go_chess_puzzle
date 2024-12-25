@@ -4,15 +4,14 @@ var game = null
 var fen
 
 function chessJsMove(source, target){
-  console.log(source, target)
   var move = game.move({
     from: source,
     to: target,
     promotion: 'q' 
   })
-
   if (move === null) return false
-  board.position(game.fen())
+
+  board.position(game.fen(), false)
   return true
 }
 
@@ -55,8 +54,7 @@ function buildBoard(data){
         highlight(last_move_cell_start, last_move_cell_end)
 
         //if(data.BestMoves.length <= movesCount) return 'snapback'
-
-        if (chessJsMove(source, target) == false) return 'snapback'
+        chessJsMove(source, target)
         updateStatus(1)
 
         setTimeout(() => {
@@ -76,7 +74,6 @@ function buildBoard(data){
       }
     }
 
-
     fen = data.FEN
 
     var config = {
@@ -95,7 +92,6 @@ function buildBoard(data){
     setTimeout(() => {
       updateStatus(0)
       let mov = adaptMove(data.BestMoves[movesCount])
-      console.log(mov)
       computerPlays(mov)
     }, 500)
 }
@@ -145,7 +141,8 @@ function adaptMove(move){
   return x
 }
 function isRightMove(move1, move2){
-  return move1 == move2
+  let f = adaptMove(move1)
+  return (f[0] + f[1]) == move2
 }
 
 function highlightHint(start, end) {
@@ -165,8 +162,9 @@ function computerPlays(move){
   last_move_cell_start = move[0]
   last_move_cell_end = move[1]
   highlight(last_move_cell_start, last_move_cell_end)
-  board.move(move[0]+'-'+move[1])
-  if (chessJsMove(move[0], move[1]) == false) return 'snapback'
+  //board.move(move[0]+'-'+move[1])
+  chessJsMove(move[0], move[1])
+
   movesCount++
 }
 
