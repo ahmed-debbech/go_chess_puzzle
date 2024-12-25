@@ -4,6 +4,7 @@ var game = null
 var fen
 
 function chessJsMove(source, target){
+  console.log(source + target)
   var move = game.move({
     from: source,
     to: target,
@@ -11,7 +12,7 @@ function chessJsMove(source, target){
   })
   if (move === null) return false
 
-  board.position(game.fen(), false)
+  board.position(game.fen()) 
   return true
 }
 
@@ -41,6 +42,7 @@ function buildBoard(data){
 
     last_move_cell_start = ""
     last_move_cell_end = ""
+
 
     function onDrop(source, target, piece, newPos, oldPos, orientation){
       document.body.style.overflow = '';
