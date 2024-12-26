@@ -45,6 +45,7 @@ func rawToPuzzle(dat map[string]interface{}) (data.Puzzle){
 		MatchLink: dat["MatchLink"].(string),
 		SeenCount: int(dat["SeenCount"].(float64)),
 		FirstSeenTime: dat["FirstSeenTime"].(string),
+		CurrentPlayer: int(dat["CurrentPlayer"].(float64)),
 	}
 	fmt.Println("[SUCCESS] converting from raw to data.Puzzle")
 	return puzzle

@@ -30,6 +30,7 @@ func Init() {
 }
 
 func InsertPuzzle(puzzle data.Puzzle) string {
+	fmt.Println(puzzle)
 	col := client.Database("official").Collection("puzzles")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)

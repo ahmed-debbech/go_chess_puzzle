@@ -42,16 +42,15 @@ func main() {
 		fmt.Println("Looking for a game match from this directory: ", os.Args[2])
 
 		match_content, id := logic.LookupMatch(os.Args[2], max)
-		//fmt.Println(match_content)
 		fmt.Println("[SUCCESS] MATCH FOUND! ID: ", id)
 
 		game := chess.ObjectifyGame(match_content)
-		fmt.Println(game.Position().Board().Draw(), " " , game.GetTagPair("Site"))
+		fmt.Println(game.Position().Board().Draw())
 
-		gameWithRandPos, _ := chess.JumpToRandPosition(game.Clone())
-		//fmt.Println(gameWithRandPos.Position().Board().Draw())
+		//gameWithRandPos, randNum := chess.JumpToRandPosition(game.Clone())
+		gameWithRandPos, randNum := chess.JumpToBeforeCheckmate(game)
 
-
+		if !chess.IsGameEligible(game, randNum) {continue}
 
 		FEN := chess.GenerateFen(gameWithRandPos)
 		whosPlaying := 0;

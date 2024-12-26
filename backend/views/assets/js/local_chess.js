@@ -20,7 +20,7 @@ function buildBoard(data){
 
     game = new Chess(data.FEN)
     orient = 'white'
-    if(data.CurrentPlayer == 0){
+    if(data.CurrentPlayer == 1){
         orient = 'black'
         $("#who_to_move_white").hide()
         $("#who_to_move_black").show()

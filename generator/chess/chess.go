@@ -4,7 +4,7 @@ import (
 	"github.com/notnil/chess"
 	"strings"
 	"fmt"
-	"math/rand/v2"
+	_"math/rand/v2"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/config"
 )
 
@@ -15,11 +15,10 @@ func ObjectifyGame(pgn string) *chess.Game {
 		fmt.Println("[ERROR] Could not load PGN with notnil/chess")
 	}
 	game := chess.NewGame(match)
-	//fmt.Print(game)
 	return game
 }
 
-func JumpToRandPosition(game *chess.Game) (*chess.Game, int){
+/*func JumpToRandPosition(game *chess.Game) (*chess.Game, int){
 	
 	x := rand.IntN(len(game.Moves()))
 	fmt.Println("[SUCCESS] random position set: ", x)
@@ -31,7 +30,7 @@ func JumpToRandPosition(game *chess.Game) (*chess.Game, int){
 	}
 
 	return newG, x
-}
+}*/
 
 func GenerateFen(game *chess.Game) string{
 	fmt.Println("[SUCCESS] generating FEN")
@@ -59,7 +58,7 @@ func MakeMoveAndFEN(game *chess.Game, move string) string{
 func IsGameEligible(game *chess.Game, randPos int) bool {
 
 	//1) check moves number
-	totalMoves := len(game.MoveHistory())-1
+	totalMoves := len(game.MoveHistory())
 	if totalMoves < config.TolaratedNumberOfMoves {return false}
 	
 	//2) check if random move number picked is not out of bounds when running stockfish later
@@ -68,5 +67,20 @@ func IsGameEligible(game *chess.Game, randPos int) bool {
 	//3) match has ended either by black/white winning only
 	if game.Method() != chess.Checkmate {return false}
 
+	//4) player is going to be the checkmating side
+	
+
 	return true
+}
+
+func JumpToBeforeCheckmate(game *chess.Game) (*chess.Game, int){
+	
+	totalMoves := len(game.MoveHistory())
+	x := totalMoves - config.BestMovesNumber
+	newG := chess.NewGame()
+	for i:=0; i <= x-1; i++ {
+		newG.Move(game.Moves()[i])
+	}
+
+	return newG, x
 }
