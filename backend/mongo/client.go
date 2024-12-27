@@ -3,10 +3,10 @@ package mongo
 import (
 	"context"
 	"fmt"
-	"os"
 	"strings"
 	"errors"
 	"time"
+	"embed"
 
 	"go.mongodb.org/mongo-driver/bson"
 	_"go.mongodb.org/mongo-driver/bson/primitive"
@@ -15,11 +15,14 @@ import (
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/data"
 )
 
+//go:embed creds
+var creds embed.FS
+
 var uri string = readCreds();
 var client *mongo.Client
 
 func readCreds() string{
-	data, err := os.ReadFile("mongo/creds")
+	data, err := creds.ReadFile("creds")
 	if err != nil {
 		panic("[ERROR] no creds file")
 	}
