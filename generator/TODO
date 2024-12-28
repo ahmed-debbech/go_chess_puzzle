@@ -1,2 +1,6 @@
-* fix promotion
-* fix castling
+* check if stockfish output is (none)
+* make puzzles better:
+	- get random lichess match and position (match should be ended up by checkmate) 
+	- run stockfish from that rand pos until the match ends up by checkmate
+	- if any not validated skip the match
+

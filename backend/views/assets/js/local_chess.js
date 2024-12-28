@@ -16,6 +16,28 @@ function chessJsMove(source, target){
   return true
 }
 
+function showAvilableMoves (square, show) {
+  var moves = game.moves({
+    square: square,
+    verbose: true
+  })
+
+  if (moves.length === 0) return
+
+  if(show){
+    // highlight the possible squares for this piece
+    for (var i = 0; i < moves.length; i++) {
+      highlightAvailable(moves[i].to)
+    }
+  }else{
+    // unhighlight the possible squares for this piece
+    for (var i = 0; i < moves.length; i++) {
+      unHighlightAvailable(moves[i].to)
+    }
+  }
+}
+
+
 function buildBoard(data){
 
     game = new Chess(data.FEN)
@@ -32,12 +54,16 @@ function buildBoard(data){
 
     function onDragStart(source, piece, position, orientation){
       event.preventDefault(); 
+
+      if (game.game_over()) return false
+
       if ((orient === 'white' && piece.search(/^w/) === -1) ||
           (orient === 'black' && piece.search(/^b/) === -1)) {
         
-        onDrop()
         return false
       }
+
+      showAvilableMoves(source, true)
     }
 
     last_move_cell_start = ""
@@ -46,6 +72,8 @@ function buildBoard(data){
 
     function onDrop(source, target, piece, newPos, oldPos, orientation){
       document.body.style.overflow = '';
+
+      showAvilableMoves(source, false)
 
       if(data.BestMoves.length <= movesCount) {$("#status").html("✅ SOLVED"); return 'snapback';}
 
@@ -158,6 +186,14 @@ function unHighlightHint(start, end) {
   .removeClass('highlight-hint')
   $("#board1").find('.square-' + end )
   .removeClass('highlight-hint')
+}
+function highlightAvailable(square) {
+  $("#board1").find('.square-' + square )
+  .addClass('highlight-available')
+}
+function unHighlightAvailable(square) {
+  $("#board1").find('.square-' + square )
+  .removeClass('highlight-available')
 }
 
 function computerPlays(move){

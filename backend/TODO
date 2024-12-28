@@ -1,1 +1,5 @@
-* check that nothing is nil when a request times out
+* check if there are enough moves and the best moves doesnt end up by checkmate
+* add points and ability to click on piece to move it
+* change the tool bar to icons and make it above the seen, solved panel
+* enhance the Puzzle ID so that it doesnt look ugly
+* implement a way to store current unsolved puzzle
