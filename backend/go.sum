@@ -1,3 +1,5 @@
+github.com/ahmed-debbech/go_chess_puzzle v0.0.0-20241227112814-7e4e3e6b89a8 h1:ObegrAXYnUfhuzj8D4DF17spa27h8SK87EBQLbb+P74=
+github.com/ahmed-debbech/go_chess_puzzle v0.0.0-20241227112814-7e4e3e6b89a8/go.mod h1:T5m91Q/HjJ5rqPfXfvk+pB6JirspphdgXpttjFd+woc=
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241130121936-21610057b122 h1:YABNqv1Tpa/M15oSoOmlGk9JKTd+XPdASZTWo14kRu8=
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241130121936-21610057b122/go.mod h1:O0flTDeoR/1EiJnzsJHM+dYsfhoLLLMprOLa9va+ukQ=
 github.com/golang/snappy v0.0.4 h1:yAGX7huGHXlcLOEtBnF4w7FQwA26wojNCwOYAEhLjQM=

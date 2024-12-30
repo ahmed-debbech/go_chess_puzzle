@@ -1,7 +1,9 @@
-var board 
+var board = null
 var movesCount = 0
 var game = null
 var fen
+var data
+var pieceClickedOn = ''
 
 function chessJsMove(source, target){
   console.log(source + target)
@@ -37,9 +39,59 @@ function showAvilableMoves (square, show) {
   }
 }
 
+function onDragStart(source, piece, position, orientation){
+  event.preventDefault(); 
 
-function buildBoard(data){
+  if (game.game_over()) return false
 
+  if ((orient === 'white' && piece.search(/^w/) === -1) ||
+      (orient === 'black' && piece.search(/^b/) === -1)) {
+    
+    return false
+  }
+
+  pieceClickedOn = source
+  showAvilableMoves(source, true)
+}
+
+function onDrop(source, target, piece, newPos, oldPos, orientation){
+  document.body.style.overflow = '';
+
+  pieceClickedOn = ''
+
+  showAvilableMoves(source, false)
+
+  if(data.BestMoves.length <= movesCount) {$("#status").html("✅ SOLVED"); return 'snapback';}
+
+  if(isRightMove(data.BestMoves[movesCount], source+target)){
+    unHighlight(last_move_cell_start, last_move_cell_end)
+    last_move_cell_start = source
+    last_move_cell_end = target
+    highlight(last_move_cell_start, last_move_cell_end)
+
+    //if(data.BestMoves.length <= movesCount) return 'snapback'
+    chessJsMove(source, target)
+    updateStatus(1)
+
+    setTimeout(() => {
+      unHighlight(last_move_cell_start, last_move_cell_end)
+      movesCount++
+
+      if(data.BestMoves.length <= movesCount)  {$("#status").html("✅ SOLVED"); return;}
+
+      computerPlays(adaptMove(data.BestMoves[movesCount]))
+
+      if(data.BestMoves.length <= movesCount)  {$("#status").html("✅ SOLVED"); return;}
+
+    },500)
+  }else{
+    updateStatus(-1)
+    return 'snapback'
+  }
+}
+
+function buildBoard(dd){
+    data = dd
     game = new Chess(data.FEN)
     orient = 'white'
     if(data.CurrentPlayer == 1){
@@ -52,71 +104,17 @@ function buildBoard(data){
         $("#who_to_move_black").hide()
     }
 
-    function onDragStart(source, piece, position, orientation){
-      event.preventDefault(); 
-
-      if (game.game_over()) return false
-
-      if ((orient === 'white' && piece.search(/^w/) === -1) ||
-          (orient === 'black' && piece.search(/^b/) === -1)) {
-        
-        return false
-      }
-
-      showAvilableMoves(source, true)
-    }
 
     last_move_cell_start = ""
     last_move_cell_end = ""
 
 
-    function onDrop(source, target, piece, newPos, oldPos, orientation){
-      document.body.style.overflow = '';
-
-      showAvilableMoves(source, false)
-
-      if(data.BestMoves.length <= movesCount) {$("#status").html("✅ SOLVED"); return 'snapback';}
-
-      if(isRightMove(data.BestMoves[movesCount], source+target)){
-        unHighlight(last_move_cell_start, last_move_cell_end)
-        last_move_cell_start = source
-        last_move_cell_end = target
-        highlight(last_move_cell_start, last_move_cell_end)
-
-        //if(data.BestMoves.length <= movesCount) return 'snapback'
-        chessJsMove(source, target)
-        updateStatus(1)
-
-        setTimeout(() => {
-          unHighlight(last_move_cell_start, last_move_cell_end)
-          movesCount++
-
-          if(data.BestMoves.length <= movesCount)  {$("#status").html("✅ SOLVED"); return;}
-
-          computerPlays(adaptMove(data.BestMoves[movesCount]))
-
-          if(data.BestMoves.length <= movesCount)  {$("#status").html("✅ SOLVED"); return;}
-
-        },500)
-      }else{
-        updateStatus(-1)
-        return 'snapback'
-      }
-    }
+    
 
     fen = data.FEN
 
-    var config = {
-      orientation: orient,
-      position: fen,
-      draggable: true,
-      dropOffBoard: 'snapback',
-      moveSpeed: 'fast',
-      snapbackSpeed: 100,
-      onDragStart: onDragStart,
-      snapSpeed: 100,
-      onDrop: onDrop
-    }
+    var config = initConfig()
+    
     board = Chessboard('board1', config)
 
     setTimeout(() => {
@@ -124,6 +122,7 @@ function buildBoard(data){
       let mov = adaptMove(data.BestMoves[movesCount])
       computerPlays(mov)
     }, 500)
+    fnInit()
 }
 
 function resetBoard(){
@@ -215,4 +214,68 @@ function hintPuzzle(moves){
     unHighlightHint(ss[0], ss[1])
   },1500)
 
+}
+
+
+function fnInit(){
+  $('.row-5277c').on('click', 'div[class^="square-"]', function() {
+    // Your logic when the div is clicked
+    console.log("div clicked")
+    let squareName = this.id.substring(0,2)
+    if(pieceClickedOn != '') {
+      onDrop(pieceClickedOn, squareName)
+      return
+    }
+    let s = game.get(squareName)
+    s = (s.color + s.type.toUpperCase())
+    console.log(this.id)
+    for(let i=0; i<=$(this).children().length-1; i++){
+      if($(this).children()[i].nodeName == "IMG"){
+        console.log(squareName, s)
+        if(s == null) return
+        onDragStart(squareName, s)
+      }
+      //$(this).css('background-color', 'lightblue');  // Example action: Change background color
+    }
+    //onDrop(pieceClickedOn, s)
+
+  });
+};
+
+function initConfig(){
+  var config
+  if(getDraggingMode() == "1"){
+    config = {
+      orientation: orient,
+      position: fen,
+      draggable: true,
+      dropOffBoard: 'snapback',
+      moveSpeed: 'fast',
+      snapbackSpeed: 100,
+      onDragStart: onDragStart,
+      snapSpeed: 100,
+      onDrop: onDrop
+    }
+  }else{
+    config = {
+      orientation: orient,
+      position: fen,
+      draggable: false,
+      dropOffBoard: 'snapback',
+      moveSpeed: 'fast',
+      snapbackSpeed: 100,
+      snapSpeed: 100
+    }
+  }
+  return config
+}
+
+
+function boardWithoutOrWithDrag(){
+
+  if (board == null) return
+
+  resetBoard()
+  board = Chessboard('board1', initConfig())
+  buildBoard(data);
 }

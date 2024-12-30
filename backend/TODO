@@ -3,3 +3,4 @@
 * change the tool bar to icons and make it above the seen, solved panel
 * enhance the Puzzle ID so that it doesnt look ugly
 * implement a way to store current unsolved puzzle
+* when press New dont refresh page

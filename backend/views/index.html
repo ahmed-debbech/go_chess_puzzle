@@ -36,15 +36,16 @@
     .highlight-move {
       box-shadow: inset 0 0 3px 3px rgb(248, 248, 92);
     }
+
     .highlight-hint {
       box-shadow: inset 0 0 3px 3px rgb(49, 49, 226);
     }
+
     .highlight-available {
       box-shadow: inset 0 0 3px 3px rgb(151, 255, 147);
     }
   </style>
   <link rel="stylesheet" href="assets/css/chessboard-1.0.0.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <!-- /END GA -->
 </head>
@@ -76,27 +77,81 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Puzzle ID: <span id="puzzle_id">-</span></h1>
+            <span id="who_to_move_white">⚪ White to move </span>
+            <span id="who_to_move_black">⚫ Black to move </span>
           </div>
 
           <div class="section-body">
             <p class="section-lead"></p>
 
             <div class="row">
+              <div class="col-9">
+                <p>Puzzle ID: <span id="puzzle_id">-</span></p>
+              </div>
+              <div class="col-3">
+                <i id="dragging" class="fas fa-toggle-on"></i>
+                Drag
+              </div>
+            </div>
+
+            <div class="row">
               <div class="col-12">
                 <div id="board1" style="margin: auto; width: auto; position: relative; box-sizing: border-box;"></div>
               </div>
             </div>
+
+            <div class="row p-2">
+              <div class="col-3 d-flex justify-content-center">
+                <ul onclick="reset()" class="pagination pagination-sm ">
+                  <li class="page-item">
+                    <a class="page-link">
+                      <i class="fas fa-redo"></i>
+
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-3 d-flex justify-content-center">
+                <ul onclick="hint()" class="pagination pagination-sm">
+                  <li class="page-item">
+                    <a class="page-link">
+                      <i class="fas fa-eye"></i>
+
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-3 d-flex justify-content-center">
+                <ul onclick="newone()" class="pagination pagination-sm">
+                  <li class="page-item">
+                    <a class="page-link">
+                      <i class="fas fa-arrow-right"></i>
+
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-3 d-flex justify-content-center">
+                <ul onclick="original()" class="pagination pagination-sm">
+                  <li class="page-item">
+                    <a class="page-link">
+                      <i class="fas fa-link"></i>
+
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col-12 col-md-12 col-lg-12">
                 <div class="card profile-widget">
                   <div class="profile-widget-header">
                     <div class="profile-widget-description">
                       <div class="profile-widget-name">
-                        <span id="who_to_move_white">⚪ White to move </span>
-                        <span id="who_to_move_black">⚫ Black to move </span>
+
                         <div class="text-muted d-inline font-weight-normal">
-                          <div class="slash"></div> <span id="status" ></span>
+                          <span id="status"></span>
                         </div>
                       </div>
                     </div>
@@ -120,31 +175,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-12">
-                <div class="form-group">
-                  <label class="form-label">Tools</label>
-                  <div class="selectgroup w-100">
-                    <label class="selectgroup-item">
-                      <input onclick="reset()" type="radio" name="value" value="50" class="selectgroup-input">
-                      <span class="selectgroup-button">Reset</span>
-                    </label>
-                    <label class="selectgroup-item">
-                      <input onclick="hint()" type="radio" name="value" value="100" class="selectgroup-input">
-                      <span class="selectgroup-button">Hint</span>
-                    </label>
-                    <label class="selectgroup-item">
-                      <input onclick="newone()" type="radio" name="value" value="150" class="selectgroup-input">
-                      <span class="selectgroup-button">New</span>
-                    </label>
-                    <label class="selectgroup-item">
-                      <input onclick="original()" type="radio" name="value" value="200" class="selectgroup-input">
-                      <span class="selectgroup-button">Original</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
+
         </section>
       </div>
       <footer class="main-footer">
@@ -159,11 +190,43 @@
       </footer>
     </div>
   </div>
-  <script src="assets/js/chess_the_engine.js"></script>
-  <script src="assets/js/chessboard-1.0.0.js"></script>
+
+  <script src="assets/modules/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  </script>
 
   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('Document is fully loaded and parsed');
+      setTimeout(() => {
+        if (getDraggingMode() == "1") {
+          $("#dragging").removeClass("fa-toggle-off")
+          $("#dragging").addClass("fa-toggle-on")
+        } else {
+          $("#dragging").addClass("fa-toggle-off")
+          $("#dragging").removeClass("fa-toggle-on")
+        }
+        $("#dragging").click(function () {
+          if (getDraggingMode() == "1") {
+            $("#dragging").addClass("fa-toggle-off")
+            $("#dragging").removeClass("fa-toggle-on")
+            setDraggingMode("0");
+          } else {
+            $("#dragging").removeClass("fa-toggle-off")
+            $("#dragging").addClass("fa-toggle-on")
+            setDraggingMode("1");
+          }
+          boardWithoutOrWithDrag()
+        })
+      }, 0)
+    })
+  </script>
+    <script src="assets/js/local_general.js"></script>
+    <script src="assets/js/chess_the_engine.js"></script>
+    <script src="assets/js/chessboard-1.0.0.js"></script>
 
+  <script>
     var url_original = ""
     var dataMatch
 
@@ -172,7 +235,7 @@
       type: "GET",
       success: function (data) {
         console.log(data)
-        if(data.ID == undefined) return
+        if (data.ID == undefined) return
 
         $("#puzzle_id").html(data.ID)
         $("#gen_time").html(moment.unix(data.GenTime.substring(0, data.GenTime.length - 9)).format(
@@ -190,24 +253,26 @@
         console.log(`Error ${error}`);
       }
     });
- 
-    function original(){
+
+    function original() {
       window.open(url_original, '_blank').focus();
     }
-    function newone(){
+
+    function newone() {
       location.reload()
     }
-    function reset(){
+
+    function reset() {
       resetBoard()
       buildBoard(dataMatch);
     }
-    function hint(){
+
+    function hint() {
       hintPuzzle(dataMatch.BestMoves)
     }
- </script>
+  </script>
 
   <!-- General JS Scripts -->
-  <script src="assets/modules/jquery.min.js"></script>
   <script src="assets/modules/popper.js"></script>
   <script src="assets/modules/tooltip.js"></script>
   <script src="assets/modules/bootstrap/js/bootstrap.min.js"></script>
