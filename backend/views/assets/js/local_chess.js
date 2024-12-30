@@ -235,10 +235,7 @@ function fnInit(){
         if(s == null) return
         onDragStart(squareName, s)
       }
-      //$(this).css('background-color', 'lightblue');  // Example action: Change background color
     }
-    //onDrop(pieceClickedOn, s)
-
   });
 };
 
