@@ -54,6 +54,13 @@ function onDragStart(source, piece, position, orientation){
   showAvilableMoves(source, true)
 }
 
+function movePieceAndRevert(source, target){
+  board.move(source + "-" + target)
+  setTimeout(() => {
+    board.move(target + "-" + source)
+  }, 500)
+}
+
 function onDrop(source, target, piece, newPos, oldPos, orientation){
   document.body.style.overflow = '';
 
@@ -85,6 +92,9 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
 
     },500)
   }else{
+    if(getDraggingMode() == "0"){
+      movePieceAndRevert(source, target)
+    }
     updateStatus(-1)
     return 'snapback'
   }
