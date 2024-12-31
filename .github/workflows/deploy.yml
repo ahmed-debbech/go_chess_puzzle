@@ -21,5 +21,7 @@ jobs:
       with:
         go-version: '1.23.2'
 
+    - name: CD
+      run: cd ./backend
     - name: Build
-      run: go build -v ./...
+      run: go build -v github.com/ahmed-debbech/go_chess_puzzle/backend
