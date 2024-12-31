@@ -47,35 +47,43 @@ func main() {
 		game := chess.ObjectifyGame(match_content)
 		fmt.Println(game.Position().Board().Draw())
 
-		//gameWithRandPos, randNum := chess.JumpToRandPosition(game.Clone())
-		gameWithRandPos, randNum := chess.JumpToBeforeCheckmate(game)
+		gameWithRandPos, randNum := chess.JumpToRandPosition(game.Clone())
+		//gameWithRandPos, randNum := chess.JumpToBeforeCheckmate(game)
 
 		if !chess.IsGameEligible(game, randNum) {continue}
 
 		FEN := chess.GenerateFen(gameWithRandPos)
-		whosPlaying := 0;
-		if gameWithRandPos.Position().Turn().Name() == "Black" {
-			whosPlaying = 0
-		}else{
-			whosPlaying = 1
-		}
 
 		fmt.Println(FEN)
 
 		movesNumber := config.BestMovesNumber
 		newfen := FEN
 		var bestmvs [config.BestMovesNumber]string
-		for i:=0; i<movesNumber; i++ {
+		for chess.IsGameOver(gameWithRandPos) {
 			bestmove := engine.GetBestMove(newfen)
-			bestmvs[i] = bestmove
+			if(bestmove == "") {break}
+			//bestmvs[i] = bestmove
 			newfen = chess.MakeMoveAndFEN(gameWithRandPos, bestmove)
+			fmt.Println(gameWithRandPos.Position().Board().Draw())
 			if newfen == "" { break; }
 		}
+		fmt.Println("final play after stockfish")
+		fmt.Println(gameWithRandPos.Position().Board().Draw())
+
+		if !chess.IsCheckmate(gameWithRandPos) {continue}
+
+		newfen = chess.NavToMove(config.BestMovesNumber, gameWithRandPos)
+
+		bestmvs = chess.GetFinalBestMoves(gameWithRandPos)
+
+		whosPlaying := chess.DetermineTurn(gameWithRandPos)
+
+
 		fmt.Println("[SUCCESS] all best ", movesNumber, " moves have been generated. ", bestmvs)
 
 		puzzle := data.Puzzle{
 			ID: strconv.Itoa(id),
-			FEN: FEN,
+			FEN: newfen,
 			BestMoves: bestmvs,
 			GenTime: strconv.Itoa(int(time.Now().UnixNano())),
 			CurrentPlayer: whosPlaying,

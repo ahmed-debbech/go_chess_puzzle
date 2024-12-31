@@ -4,7 +4,7 @@ import (
 	"github.com/notnil/chess"
 	"strings"
 	"fmt"
-	_"math/rand/v2"
+	"math/rand/v2"
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/config"
 )
 
@@ -18,7 +18,30 @@ func ObjectifyGame(pgn string) *chess.Game {
 	return game
 }
 
-/*func JumpToRandPosition(game *chess.Game) (*chess.Game, int){
+func IsCheckmate(game *chess.Game) bool{
+	return game.Method() == chess.Checkmate
+}
+
+func NavToMove(mvNum int, game *chess.Game) string{
+	f := chess.NewGame()
+
+	for mv:=0; mv<=(len(game.Moves()) - mvNum)-1; mv++{
+		f.Move(game.Moves()[mv])
+	}
+	return f.FEN()
+}
+
+func GetFinalBestMoves(game *chess.Game) [config.BestMovesNumber]string{
+
+	var bestmvs [config.BestMovesNumber]string
+	j:=config.BestMovesNumber-1
+	for i := len(game.Moves())-1; i>((len(game.Moves())-1) - config.BestMovesNumber); i-- {
+		bestmvs[j] = game.Moves()[i].String()
+		j--
+	}
+	return bestmvs
+}
+func JumpToRandPosition(game *chess.Game) (*chess.Game, int){
 	
 	x := rand.IntN(len(game.Moves()))
 	fmt.Println("[SUCCESS] random position set: ", x)
@@ -30,7 +53,7 @@ func ObjectifyGame(pgn string) *chess.Game {
 	}
 
 	return newG, x
-}*/
+}
 
 func GenerateFen(game *chess.Game) string{
 	fmt.Println("[SUCCESS] generating FEN")
@@ -66,11 +89,13 @@ func IsGameEligible(game *chess.Game, randPos int) bool {
 
 	//3) match has ended either by black/white winning only
 	if game.Method() != chess.Checkmate {return false}
-
-	//4) player is going to be the checkmating side
 	
 
 	return true
+}
+
+func IsGameOver(game *chess.Game) bool{
+	return game.Outcome() == chess.NoOutcome
 }
 
 func JumpToBeforeCheckmate(game *chess.Game) (*chess.Game, int){
@@ -83,4 +108,14 @@ func JumpToBeforeCheckmate(game *chess.Game) (*chess.Game, int){
 	}
 
 	return newG, x
+}
+
+func DetermineTurn(game *chess.Game) int{
+	whosPlaying := 0;
+	if game.Position().Turn().Name() == "Black" {
+		whosPlaying = 0
+	}else{
+		whosPlaying = 1
+	}
+	return whosPlaying
 }

@@ -33,6 +33,9 @@ func GetBestMove(FEN string) (string){
 
 	bm := uci.GetResultsBestMove()
 	fmt.Println("[SUCCESS] got best move (", bm ,")")
+	if extractBestMove(bm) == "(none)" {
+		return ""
+	}
 	
 	if err := uci.Kill(); err != nil{
 		return ""
