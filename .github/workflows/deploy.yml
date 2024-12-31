@@ -24,4 +24,4 @@ jobs:
     - name: CD
       run: cd ./backend
     - name: Build
-      run: go build -v github.com/ahmed-debbech/go_chess_puzzle/backend
+      run: go build -v .
