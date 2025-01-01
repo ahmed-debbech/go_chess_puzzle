@@ -35,7 +35,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
+        key: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
           kill -9 $(cat backend.pid)
