@@ -23,7 +23,8 @@ jobs:
 
     - name: Build
       run: |
-        echo "${{ secrets.PASSWORD }}" > .ssh/github_rsa
+        touch .ssh/id_rsa
+        echo "${{ secrets.PASSWORD }}" > .ssh/id_rsa
         cd backend
         echo "${{ secrets.MongoUrl }}" >> mongo/creds
         go get .
