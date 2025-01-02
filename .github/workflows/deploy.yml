@@ -47,3 +47,4 @@ jobs:
           kill -9 $(cat backend.pid)
           rm nohup.out
           nohup ./backend & echo $! > backend.pid
+          exit
