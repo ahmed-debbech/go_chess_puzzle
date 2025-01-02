@@ -47,5 +47,7 @@ jobs:
           echo "On Server!"
           kill -9 $(cat backend.pid)
           rm nohup.out
-          nohup ./backend & echo $! > backend.pid
+          echo "nohup ./backend &" > script.sh
+          chmod 700 script.sh
+          ./script.sh
           echo "Backend process started in the background. Exiting SSH session..."

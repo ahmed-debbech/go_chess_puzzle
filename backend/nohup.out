@@ -1,18 +1,2 @@
 Hello world
 [SUCCESS] You successfully connected to MongoDB!
-Hello world
-[SUCCESS] You successfully connected to MongoDB!
-listen tcp :5530: bind: address already in use
-[SUCCESS] destroy Mongo client
-Hello world
-[SUCCESS] You successfully connected to MongoDB!
-listen tcp :5530: bind: address already in use
-[SUCCESS] destroy Mongo client
-Hello world
-[SUCCESS] You successfully connected to MongoDB!
-listen tcp :5530: bind: address already in use
-[SUCCESS] destroy Mongo client
-Hello world
-[SUCCESS] You successfully connected to MongoDB!
-listen tcp :5530: bind: address already in use
-[SUCCESS] destroy Mongo client
