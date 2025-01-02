@@ -32,9 +32,9 @@ jobs:
         echo "${{ secrets.MongoUrl }}" >> mongo/creds
         go get .
         go build -v .
-        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "kill -9 \$(cat ~/backend.pid)"
+        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "kill -9 $(cat ~/backend.pid)"
         scp backend ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/${{ secrets.USERNAME }}
-
+      continue-on-error: true
     
     - name: Deploy
       uses: appleboy/ssh-action@v1.2.0
@@ -45,7 +45,6 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           echo "On Server!"
-          kill -9 $(cat backend.pid)
           rm nohup.out
           echo "nohup ./backend &" > script.sh
           chmod 700 script.sh
