@@ -32,7 +32,7 @@ jobs:
         echo "${{ secrets.MongoUrl }}" >> mongo/creds
         go get .
         go build -v .
-        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "kill -9 $(cat ~/backend.pid)"
+        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "kill -9 \$(cat ~/backend.pid)"
         scp backend ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/${{ secrets.USERNAME }}
       continue-on-error: true
     
@@ -46,5 +46,5 @@ jobs:
         script: |
           echo "On Server!"
           rm nohup.out
-          nohup ./backend >> ss 2>&1 < /dev/null & disown
+          nohup ./backend >> ss 2>&1 < /dev/null & echo $! > backend.pid; disown
           echo "Backend process started in the background. Exiting SSH session..."
