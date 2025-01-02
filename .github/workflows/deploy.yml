@@ -23,8 +23,11 @@ jobs:
 
     - name: Build
       run: |
-        touch .ssh/id_rsa
-        echo "${{ secrets.PASSWORD }}" > .ssh/id_rsa
+        mkdir -p ~/.ssh
+        touch ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        echo "${{ secrets.PASSWORD }}" > ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
         cd backend
         echo "${{ secrets.MongoUrl }}" >> mongo/creds
         go get .
@@ -40,6 +43,7 @@ jobs:
         key: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
+          echo "On Server!"
           kill -9 $(cat backend.pid)
           rm nohup.out
           nohup ./backend & echo $! > backend.pid
