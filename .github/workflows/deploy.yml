@@ -32,6 +32,7 @@ jobs:
         echo "${{ secrets.MongoUrl }}" >> mongo/creds
         go get .
         go build -v .
+        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "kill -9 \$(cat ~/backend.pid)"
         scp backend ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/${{ secrets.USERNAME }}
 
     
@@ -48,4 +49,3 @@ jobs:
           rm nohup.out
           nohup ./backend & echo $! > backend.pid
           echo "Backend process started in the background. Exiting SSH session..."
-
