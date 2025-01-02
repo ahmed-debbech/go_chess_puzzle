@@ -46,7 +46,5 @@ jobs:
         script: |
           echo "On Server!"
           rm nohup.out
-          echo "nohup ./backend &" > script.sh
-          chmod 700 script.sh
-          ./script.sh
+          nohup ./backend >> ss 2>&1 < /dev/null & disown
           echo "Backend process started in the background. Exiting SSH session..."
