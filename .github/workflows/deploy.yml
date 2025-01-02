@@ -32,7 +32,7 @@ jobs:
         echo "${{ secrets.MongoUrl }}" >> mongo/creds
         go get .
         go build -v .
-        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "kill -9 \$(cat ~/backend.pid)"
+        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "kill -9 \$(cat ~/backend.pid)" || true
         scp backend ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/${{ secrets.USERNAME }}
       continue-on-error: true
     
