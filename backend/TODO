@@ -1,6 +1,3 @@
-* check if there are enough moves and the best moves doesnt end up by checkmate
-* add points and ability to click on piece to move it
-* change the tool bar to icons and make it above the seen, solved panel
-* enhance the Puzzle ID so that it doesnt look ugly
 * implement a way to store current unsolved puzzle
 * when press New dont refresh page
+* make sure when in click mode when moving a piece to catch another piece and it is wrong move then return back the captured piece
