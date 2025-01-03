@@ -7,7 +7,7 @@ import (
 	"errors"
 	"bufio"
 	"strings"
-	"github.com/ahmed-debbech/go_chess_puzzle/generator/config"
+	"strconv"
 )
 
 type UCI struct{
@@ -57,12 +57,12 @@ func (uci *UCI) Start() error{
 }
 
 func (uci *UCI) setPosition(FEN string) error {
-	nm, err := uci.Stdin.WriteString("position fen "+FEN+"\n")
+	_, err := uci.Stdin.WriteString("position fen "+FEN+"\n")
 	if err != nil {
 		fmt.Println("[ERROR] while writing position")
 		return errors.New("[ERROR] while writing position")
 	}
-	fmt.Println("[SUCCESS] wrote position to SF: ", nm ," bytes.")
+	fmt.Println("[SUCCESS] wrote position to SF: ", string("position fen "+FEN+"\n"))
 
 	if err = uci.Stdin.Flush(); err != nil {
 		fmt.Println("[ERROR] could not flush SF STDIN")
@@ -72,13 +72,16 @@ func (uci *UCI) setPosition(FEN string) error {
 	return nil
 }
 
-func (uci *UCI) Go() error {
-	nm, err := uci.Stdin.WriteString("go movetime "+ config.MoveTimeEngine +"\n")
+func (uci *UCI) Go(level int) error {
+	//nm, err := uci.Stdin.WriteString("go movetime "+ config.MoveTimeEngine +"\n")
+	
+	sslevel := strconv.Itoa(level)
+	_, err := uci.Stdin.WriteString("go depth "+ sslevel +"\n")
 	if err != nil {
 		fmt.Println("[ERROR] when GO command issued")
 		return errors.New("[ERROR] when GO command issued")
 	}
-	fmt.Println("[SUCCESS] wrote position to SF: ", nm ," bytes.")
+	fmt.Println("[SUCCESS] wrote position to SF: ", string("go depth "+ sslevel +"\n"))
 
 	if err = uci.Stdin.Flush(); err != nil {
 		fmt.Println("[ERROR] could not flush SF STDIN")

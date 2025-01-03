@@ -6,7 +6,6 @@ var data
 var pieceClickedOn = ''
 
 function chessJsMove(source, target){
-  console.log(source + target)
   var move = game.move({
     from: source,
     to: target,
@@ -231,7 +230,6 @@ function hintPuzzle(moves){
 function fnInit(){
   $('.row-5277c').on('click', 'div[class^="square-"]', function() {
     // Your logic when the div is clicked
-    console.log("div clicked")
     let squareName = this.id.substring(0,2)
     if(pieceClickedOn != '') {
       onDrop(pieceClickedOn, squareName)
@@ -239,10 +237,8 @@ function fnInit(){
     }
     let s = game.get(squareName)
     s = (s.color + s.type.toUpperCase())
-    console.log(this.id)
     for(let i=0; i<=$(this).children().length-1; i++){
       if($(this).children()[i].nodeName == "IMG"){
-        console.log(squareName, s)
         if(s == null) return
         onDragStart(squareName, s)
       }

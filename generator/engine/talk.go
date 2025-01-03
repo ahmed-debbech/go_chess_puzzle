@@ -12,7 +12,7 @@ func extractBestMove(str string) (string){
 	return strings.Split(str, " ")[1]
 }
 
-func GetBestMove(FEN string) (string){
+func GetBestMove(FEN string, level int) (string){
 
 	uci := &UCI{}
 	if err := uci.Init(); err != nil{
@@ -27,7 +27,7 @@ func GetBestMove(FEN string) (string){
 	if err := uci.setPosition(FEN); err != nil{
 		return ""
 	}
-	if err := uci.Go(); err != nil{
+	if err := uci.Go(level); err != nil{
 		return ""
 	}
 

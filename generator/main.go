@@ -59,13 +59,20 @@ func main() {
 		movesNumber := config.BestMovesNumber
 		newfen := FEN
 		var bestmvs [config.BestMovesNumber]string
+		tu := 0
 		for chess.IsGameOver(gameWithRandPos) {
-			bestmove := engine.GetBestMove(newfen)
+			var bestmove string
+			if tu % 2 == 0 {
+				bestmove = engine.GetBestMove(newfen, 24)
+			}else{
+				bestmove = engine.GetBestMove(newfen, 4)
+			}
+			tu++
 			if(bestmove == "") {break}
 			//bestmvs[i] = bestmove
 			newfen = chess.MakeMoveAndFEN(gameWithRandPos, bestmove)
 			fmt.Println(gameWithRandPos.Position().Board().Draw())
-			if newfen == "" { break; }
+			if newfen == "" { panic("SYSTEM HALT: because of error happened in generating a new fen") }
 		}
 		fmt.Println("final play after stockfish")
 		fmt.Println(gameWithRandPos.Position().Board().Draw())
