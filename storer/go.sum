@@ -10,6 +10,10 @@ github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241130112527-712acf9
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241130112527-712acf99b386/go.mod h1:O0flTDeoR/1EiJnzsJHM+dYsfhoLLLMprOLa9va+ukQ=
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241226093950-e52b2fbdad83 h1:Y+weM+XrbGQ2xpY5dNzqBifQI9eUCUxuWEg0BZgBOlA=
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241226093950-e52b2fbdad83/go.mod h1:h7rdtIN/l62JTh9v0VGX+l62NmKpOceGWZcgNeTUbn0=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250103113610-62ed474c745d h1:2vqbhlzsj6AzRHXjafdQX1/0IHpIRvc2QEDaQ2jUuGU=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250103113610-62ed474c745d/go.mod h1:h7rdtIN/l62JTh9v0VGX+l62NmKpOceGWZcgNeTUbn0=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250103121911-461e16ca25d6 h1:1PV8hHsa/E1qQNvNWb/pljbegi1f7Ku+2LjdZRyJdnU=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250103121911-461e16ca25d6/go.mod h1:h7rdtIN/l62JTh9v0VGX+l62NmKpOceGWZcgNeTUbn0=
 github.com/ajstarks/svgo v0.0.0-20200320125537-f189e35d30ca/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
 github.com/golang/snappy v0.0.4 h1:yAGX7huGHXlcLOEtBnF4w7FQwA26wojNCwOYAEhLjQM=
 github.com/golang/snappy v0.0.4/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=

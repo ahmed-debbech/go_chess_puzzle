@@ -3,7 +3,7 @@ module github.com/ahmed-debbech/go_chess_puzzle/storer
 go 1.23.2
 
 require (
-	github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20241226093950-e52b2fbdad83
+	github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250103121911-461e16ca25d6
 	go.mongodb.org/mongo-driver v1.17.1
 )
 

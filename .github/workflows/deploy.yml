@@ -31,6 +31,7 @@ jobs:
         cd backend
         echo "${{ secrets.MongoUrl }}" >> mongo/creds
         go get .
+        go get github.com/ahmed-debbech/go_chess_puzzle/generator/config
         go build -v .
         ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "kill -9 \$(cat ~/backend.pid)" || true
         scp backend ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/${{ secrets.USERNAME }}
