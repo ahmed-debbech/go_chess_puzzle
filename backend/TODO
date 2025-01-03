@@ -1,3 +1,2 @@
 * implement a way to store current unsolved puzzle
 * when press New dont refresh page
-* make sure when in click mode when moving a piece to catch another piece and it is wrong move then return back the captured piece

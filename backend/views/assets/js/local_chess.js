@@ -58,6 +58,7 @@ function movePieceAndRevert(source, target){
   board.move(source + "-" + target)
   setTimeout(() => {
     board.move(target + "-" + source)
+    board.position(game.fen()) 
   }, 500)
 }
 
