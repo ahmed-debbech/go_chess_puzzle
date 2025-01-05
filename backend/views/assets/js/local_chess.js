@@ -189,6 +189,8 @@ function highlightHint(start, end) {
   .addClass('highlight-hint')
   $("#board1").find('.square-' + end )
   .addClass('highlight-hint')
+  unHighlightAvailable(start)
+  unHighlightAvailable(end)
 }
 function unHighlightHint(start, end) {
   $("#board1").find('.square-' + start )
