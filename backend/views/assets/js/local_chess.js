@@ -68,7 +68,7 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
 
   showAvilableMoves(source, false)
 
-  if(data.BestMoves.length <= movesCount) {$("#status").html("✅ SOLVED"); return 'snapback';}
+  if(data.BestMoves.length <= movesCount) {$("#status").html("SOLVED"); return 'snapback';}
 
   if(isRightMove(data.BestMoves[movesCount], source+target)){
     unHighlight(last_move_cell_start, last_move_cell_end)
@@ -84,11 +84,11 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
       unHighlight(last_move_cell_start, last_move_cell_end)
       movesCount++
 
-      if(data.BestMoves.length <= movesCount)  {$("#status").html("✅ SOLVED"); return;}
+      if(data.BestMoves.length <= movesCount)  {$("#status").html("SOLVED"); return;}
 
       computerPlays(adaptMove(data.BestMoves[movesCount]))
 
-      if(data.BestMoves.length <= movesCount)  {$("#status").html("✅ SOLVED"); return;}
+      if(data.BestMoves.length <= movesCount)  {$("#status").html("SOLVED"); return;}
 
     },500)
   }else{
@@ -148,11 +148,11 @@ function updateStatus(mode){
     $("#status").css({"color" : ""})
   }
   if(mode == 1){
-    $("#status").html("Correct! keep going..")
+    $("#status").html("🟢 Correct! keep going..")
     $("#status").css({"color" : "#15a51d"})
   }
   if(mode == -1){
-    $("#status").html("Wrong! try again..")
+    $("#status").html("🔴 Wrong! try again..")
     $("#status").css({"color" : "#dc3545"})
   }
 }
