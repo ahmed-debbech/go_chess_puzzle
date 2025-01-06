@@ -68,7 +68,7 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
 
   showAvilableMoves(source, false)
 
-  if(data.BestMoves.length <= movesCount) {$("#status").html("SOLVED"); return 'snapback';}
+  if(data.BestMoves.length <= movesCount) {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); return 'snapback';}
 
   if(isRightMove(data.BestMoves[movesCount], source+target)){
     unHighlight(last_move_cell_start, last_move_cell_end)
@@ -84,11 +84,11 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
       unHighlight(last_move_cell_start, last_move_cell_end)
       movesCount++
 
-      if(data.BestMoves.length <= movesCount)  {$("#status").html("SOLVED"); return;}
+      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); return;}
 
       computerPlays(adaptMove(data.BestMoves[movesCount]))
 
-      if(data.BestMoves.length <= movesCount)  {$("#status").html("SOLVED"); return;}
+      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); return;}
 
     },500)
   }else{
@@ -101,6 +101,7 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
 }
 
 function buildBoard(dd){
+    $('#solved_badge').css('display', 'none');
     data = dd
     game = new Chess(data.FEN)
     orient = 'white'
@@ -189,6 +190,8 @@ function highlightHint(start, end) {
   .addClass('highlight-hint')
   $("#board1").find('.square-' + end )
   .addClass('highlight-hint')
+  unHighlightAvailable(start)
+  unHighlightAvailable(end)
 }
 function unHighlightHint(start, end) {
   $("#board1").find('.square-' + start )
