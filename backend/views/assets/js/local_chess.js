@@ -119,9 +119,6 @@ function buildBoard(dd){
     last_move_cell_start = ""
     last_move_cell_end = ""
 
-
-    
-
     fen = data.FEN
 
     var config = initConfig()
