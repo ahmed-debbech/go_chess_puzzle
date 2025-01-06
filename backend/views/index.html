@@ -18,6 +18,7 @@
 
   <script src="assets/js/moment.js"></script>
   <script src="assets/js/local_chess.js"></script>
+  <script src="assets/js/tools.js"></script>
 
 
   <!-- Start GA -->
@@ -33,20 +34,9 @@
     gtag('config', 'UA-94034622-3');
   </script>
 
-  <style>
-    .highlight-move {
-      box-shadow: inset 0 0 3px 3px rgb(248, 248, 92);
-    }
 
-    .highlight-hint {
-      box-shadow: inset 0 0 3px 3px rgb(49, 49, 226);
-    }
-
-    .highlight-available {
-      box-shadow: inset 0 0 3px 3px rgb(151, 255, 147);
-    }
-  </style>
   <link rel="stylesheet" href="assets/css/chessboard-1.0.0.css">
+  <link rel="stylesheet" href="assets/css/mycss.css">
 
   <!-- /END GA -->
 </head>
@@ -87,7 +77,7 @@
               </div>
             </div>
 
-            <div  id="solved_badge" style="display: none;" class="row">
+            <div id="solved_badge" style="display: none;" class="row">
               <div class="col-12">
                 <div class="alert alert-success alert-has-icon">
                   <div class="alert-icon"><i class="far fa-thumbs-up"></i></div>
@@ -98,12 +88,18 @@
                 </div>
               </div>
             </div>
+            <div id="loading_block" class="row">
+              <div class="col-12">
+                <div class="loading_container">
+                  <div class="loading-circle"></div>
+                </div>
+              </div>
+            </div>
             <div class="row">
               <div class="col-12">
                 <div id="board1" style="margin: auto; width: auto; position: relative; box-sizing: border-box;"></div>
               </div>
             </div>
-
             <div class="row p-2">
               <div class="col-4 d-flex justify-content-center">
                 <ul onclick="reset()" class="pagination pagination-sm ">
@@ -214,48 +210,26 @@
   <script src="assets/js/chessboard-1.0.0.js"></script>
 
   <script>
-    var url_original = ""
-    var dataMatch
 
-    $.ajax({
-      url: '/load',
-      type: "GET",
-      success: function (data) {
-        console.log(data)
-        if (data.ID == undefined) return
+    var obj = { url_original: "", dataMatch: undefined }
+    requestNew(obj)
 
-        $("#puzzle_id").html(data.ID)
-        $("#gen_time").html(moment.unix(data.GenTime.substring(0, data.GenTime.length - 9)).format(
-          'DD/MM/YYYY'))
-        $("#seen_times").html(data.SeenCount)
-        $("#sol_times").html(data.SolveCount)
-
-        url_original = data.MatchLink
-
-        buildBoard(data);
-        dataMatch = data
-      },
-
-      error: function (error) {
-        console.log(`Error ${error}`);
-      }
-    });
 
     function original() {
-      window.open(url_original, '_blank').focus();
+      window.open(obj.url_original, '_blank').focus();
     }
 
     function newone() {
-      location.reload()
+      requestNew(obj)
     }
 
     function reset() {
       resetBoard()
-      buildBoard(dataMatch);
+      buildBoard(obj.dataMatch);
     }
 
     function hint() {
-      hintPuzzle(dataMatch.BestMoves)
+      hintPuzzle(obj.dataMatch.BestMoves)
     }
   </script>
 
