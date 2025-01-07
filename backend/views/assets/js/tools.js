@@ -28,3 +28,17 @@ function requestNew(obj){
         }
     });
 }
+
+function getUuid(){
+    console.log("log")
+    if(localStorage.getItem("chess_uuid") == null){
+        let uuid = "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+            (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+        );
+
+        localStorage.setItem("chess_uuid", uuid)
+        return uuid
+    }else{
+        return localStorage.getItem("chess_uuid")
+    }
+}
