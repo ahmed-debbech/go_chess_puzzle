@@ -7,6 +7,7 @@ import (
 	"io/fs"
 	_"time"
 	"github.com/ahmed-debbech/go_chess_puzzle/backend/logic"
+	"github.com/ahmed-debbech/go_chess_puzzle/backend/ramstore"
 )
 
 //go:embed views/*.html
@@ -46,6 +47,7 @@ func loadPuzzleHandle(w http.ResponseWriter, r *http.Request){
 		
 		w.Write([]byte(`{"error": "`+err.Error()+`"}`))
 	}
+	ramstore.SetToRamStore(puzzle)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(serial)
 }
