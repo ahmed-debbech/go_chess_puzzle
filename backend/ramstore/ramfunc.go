@@ -8,5 +8,6 @@ import (
 func SetToRamStore(puzzle *data.Puzzle){
 	fmt.Println("Setting puzzle to RamStore")
 	GetRamStoreInstance()
-	Set(puzzle, Calculate())
+	Set(puzzle.ID, Calculate(puzzle.ID, puzzle.BestMoves))
+	
 }
