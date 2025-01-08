@@ -1,7 +1,7 @@
 # Pichess
 ###### You like Lichess? You will love Pichess ❤️ 
 
-![](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=master)
+![](https://github.com/ahmed-debbech/go_chess_puzzle/actions/workflows/deploy.yml/badge.svg)
 
 A Chess puzzle generator from Lichess.org match databases using Stockfish to calculate best moves.
 
