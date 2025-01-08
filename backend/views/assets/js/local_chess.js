@@ -68,7 +68,7 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
 
   showAvilableMoves(source, false)
 
-  if(data.BestMoves.length <= movesCount) {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); return 'snapback';}
+  if(data.BestMoves.length <= movesCount) {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); solve(data.ID); return 'snapback';}
 
   if(isRightMove(data.BestMoves[movesCount], source+target)){
     unHighlight(last_move_cell_start, last_move_cell_end)
@@ -79,6 +79,8 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
     //if(data.BestMoves.length <= movesCount) return 'snapback'
     chessJsMove(source, target)
     updateStatus(1)
+
+    addCreatedMove(source+target)
 
     setTimeout(() => {
       unHighlight(last_move_cell_start, last_move_cell_end)
@@ -134,6 +136,7 @@ function buildBoard(dd){
 }
 
 function resetBoard(){
+  resetCreatedMoves()
   board = Chessboard('board1')
   movesCount = 0
   updateStatus(0)

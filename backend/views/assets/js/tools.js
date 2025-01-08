@@ -1,3 +1,6 @@
+var createdMoves = ""
+
+
 function requestNew(obj){
     $("#loading_block").show()
     document.getElementById('board1').innerHTML = '';
@@ -41,4 +44,24 @@ function getUuid(){
     }else{
         return localStorage.getItem("chess_uuid")
     }
+}
+
+function addCreatedMove(move){
+    createdMoves += move
+    console.log(createdMoves)
+}
+function resetCreatedMoves(){
+    createdMoves = ""
+}
+
+function calculateHash(){
+
+}
+
+function countSum(){
+
+}
+
+function solved(id){
+    
 }
