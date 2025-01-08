@@ -7,6 +7,7 @@ A Chess puzzle generator from Lichess.org match databases using Stockfish to cal
 
 ### Demo
 
+![](.demo/demo.gif)
 
 ### How does it work?
 
