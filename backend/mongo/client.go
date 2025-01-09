@@ -62,6 +62,7 @@ func MongoFindRandPuzzle() (*data.Puzzle, error){
 	if len(result) == 0 {return nil, errors.New("could not find any result")}
 	
 	fmt.Println("[SUCCESS] found random puzzle with id:", result[0].ID)
+
 	return &result[0], nil
 }
 

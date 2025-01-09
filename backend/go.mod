@@ -3,7 +3,7 @@ module github.com/ahmed-debbech/go_chess_puzzle/backend
 go 1.23.2
 
 require (
-	github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250103134145-8e8a8af4dbd6
+	github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250109214724-6b0c7875d733
 	go.mongodb.org/mongo-driver v1.17.1
 )
 
