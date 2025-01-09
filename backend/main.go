@@ -51,6 +51,24 @@ func loadPuzzleHandle(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(serial)
 }
+
+func solvedHandler(w http.ResponseWriter, r *http.Request){
+	if(r.Method != "GET"){http.Error(w, "Invalid", http.StatusMethodNotAllowed); return;}
+    
+	query := r.URL.Query()
+    puzzleId := query.Get("pid")
+	hash := query.Get("h")
+
+	solved := ramstore.CheckRamStore(puzzleId, hash)
+
+	if solved {
+		go logic.IncrementSolvedCounter(puzzleId)
+		w.Write([]byte("true"))
+	}else{
+		w.Write([]byte("false"))
+	}
+}
+
 func rootHandle(w http.ResponseWriter, r *http.Request) {
 	p := loadPage("index.html")
 	if p == nil { return }
@@ -76,6 +94,7 @@ func main(){
 	)
 	http.HandleFunc("/", rootHandle)
 	http.HandleFunc("/load", loadPuzzleHandle)
+	http.HandleFunc("/solved", solvedHandler)
 
 
     fmt.Println(http.ListenAndServe(":5530", nil))

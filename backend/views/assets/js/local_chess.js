@@ -68,7 +68,7 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
 
   showAvilableMoves(source, false)
 
-  if(data.BestMoves.length <= movesCount) {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); solve(data.ID); return 'snapback';}
+  if(data.BestMoves.length <= movesCount) {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); solved(data.ID); return 'snapback';}
 
   if(isRightMove(data.BestMoves[movesCount], source+target)){
     unHighlight(last_move_cell_start, last_move_cell_end)
@@ -86,11 +86,11 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
       unHighlight(last_move_cell_start, last_move_cell_end)
       movesCount++
 
-      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); return;}
+      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); solved(data.ID); $("#status").html("SOLVED"); return;}
 
       computerPlays(adaptMove(data.BestMoves[movesCount]))
 
-      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); return;}
+      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); solved(data.ID); $("#status").html("SOLVED"); return;}
 
     },500)
   }else{

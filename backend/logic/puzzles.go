@@ -22,3 +22,7 @@ func PuzzleToJson(puzzle data.Puzzle) ([]byte, error){
 	}
 	return dat, nil
 }
+
+func IncrementSolvedCounter(puzzleId string) {
+	mongo.IncrementSolved(puzzleId)
+}

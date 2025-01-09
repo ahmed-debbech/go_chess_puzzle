@@ -6,6 +6,7 @@ import (
 	"strings"
     "crypto/sha256"
 	"encoding/hex"
+	"errors"
 
 	"github.com/ahmed-debbech/go_chess_puzzle/generator/config"
 )
@@ -31,6 +32,7 @@ func GetRamStoreInstance() *RamStore{
 func Set(pid string, hash string){
 	ramStoreInstance.store[pid] = hash
 	fmt.Println(ramStoreInstance)
+	fmt.Println("LEN: ", len(ramStoreInstance.store))
 }
 
 func extractDigits(move string) int{
@@ -65,4 +67,18 @@ func Calculate(pid string, bestmove [config.BestMovesNumber]string) string{
 	hash += strconv.Itoa(sum)
 	hash += strings.Join(necessary_moves, "")
 	return doHash(hash)
+}
+
+func Get(pid string) (string, error) {
+
+	i, ok := ramStoreInstance.store[pid]
+	if ok {
+		return i , nil
+	}
+	return "", errors.New("hash is not found")
+
+}
+
+func Delete(pid string) {
+	delete(ramStoreInstance.store, pid)
 }

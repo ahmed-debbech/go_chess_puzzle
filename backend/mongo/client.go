@@ -90,3 +90,20 @@ func Destroy() {
 	}
 	fmt.Println("[SUCCESS] destroy Mongo client")
 }
+
+func IncrementSolved(pid string){
+
+	coll := client.Database("official").Collection("puzzles")
+
+	pipe := bson.D{
+		{"$inc", bson.D{
+			{"solvecount", 1},
+		}},
+	}
+	filter := bson.D{{"id", pid}}
+
+	_, err := coll.UpdateOne(context.TODO(), filter, pipe)
+	if err != nil {
+		fmt.Println("[ERROR] could not increment solvecount for",pid," because:" , err)
+	}
+}
