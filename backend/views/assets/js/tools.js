@@ -23,6 +23,7 @@ function requestNew(obj){
             buildBoard(data);
             obj.dataMatch = data
             $("#loading_block").hide()
+            seen(data.ID)
 
         },
 
@@ -32,9 +33,9 @@ function requestNew(obj){
     });
 }
 
-function requestNew(obj){
+function seen(pid){
     $.ajax({
-        url: '/seen',
+        url: '/seen?pid='+pid,
         type: "GET",
         success: function (data) {
             console.log(data)

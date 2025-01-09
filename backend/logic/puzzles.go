@@ -26,3 +26,7 @@ func PuzzleToJson(puzzle data.Puzzle) ([]byte, error){
 func IncrementSolvedCounter(puzzleId string) {
 	mongo.IncrementSolved(puzzleId)
 }
+
+func MarkPuzzleAsSeen(pid string, uuid string){
+	mongo.MarkAsSeen(pid, uuid)
+}

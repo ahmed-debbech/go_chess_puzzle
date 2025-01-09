@@ -107,3 +107,6 @@ func IncrementSolved(pid string){
 		fmt.Println("[ERROR] could not increment solvecount for",pid," because:" , err)
 	}
 }
+func MarkAsSeen(pid string, uuid string) {
+	
+}

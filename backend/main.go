@@ -6,6 +6,8 @@ import (
 	"embed"
 	"io/fs"
 	_"time"
+	"errors"
+
 	"github.com/ahmed-debbech/go_chess_puzzle/backend/logic"
 	"github.com/ahmed-debbech/go_chess_puzzle/backend/ramstore"
 )
@@ -69,6 +71,29 @@ func solvedHandler(w http.ResponseWriter, r *http.Request){
 	}
 }
 
+func seenHandler(w http.ResponseWriter, r *http.Request) {
+	if(r.Method != "GET"){http.Error(w, "Invalid", http.StatusMethodNotAllowed); return;}
+
+	query := r.URL.Query()
+	pid := query.Get("pid")
+
+	cookie, err := r.Cookie("chess_uuid")
+    if err != nil {
+        switch {
+        case errors.Is(err, http.ErrNoCookie):
+            http.Error(w, "cookie not found", http.StatusBadRequest)
+        default:
+            http.Error(w, "server error", http.StatusInternalServerError)
+        }
+        return
+    }
+	uuid := cookie.Value
+
+	go logic.MarkPuzzleAsSeen(pid, uuid)
+
+	w.Write([]byte("seen"))
+}
+
 func rootHandle(w http.ResponseWriter, r *http.Request) {
 	p := loadPage("index.html")
 	if p == nil { return }
@@ -95,7 +120,7 @@ func main(){
 	http.HandleFunc("/", rootHandle)
 	http.HandleFunc("/load", loadPuzzleHandle)
 	http.HandleFunc("/solved", solvedHandler)
-
+	http.HandleFunc("/seen", seenHandler)
 
     fmt.Println(http.ListenAndServe(":5530", nil))
 }
