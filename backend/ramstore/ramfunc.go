@@ -2,10 +2,10 @@ package ramstore
 
 import (
 	"fmt"
-	"github.com/ahmed-debbech/go_chess_puzzle/generator/data"
+	"github.com/ahmed-debbech/go_chess_puzzle/backend/logic"
 )
 
-func SetToRamStore(puzzle *data.Puzzle){
+func SetToRamStore(puzzle *logic.PuzzleDto){
 	fmt.Println("Setting puzzle to RamStore")
 	GetRamStoreInstance()
 	Set(puzzle.ID, Calculate(puzzle.ID, puzzle.BestMoves))

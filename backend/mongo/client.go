@@ -109,5 +109,14 @@ func IncrementSolved(pid string){
 	}
 }
 func MarkAsSeen(pid string, uuid string) {
-	
+	coll := client.Database("official").Collection("puzzles")
+
+	pipe := bson.D{{"$addToSet", bson.D{{"seencount", uuid}},}}
+
+	filter := bson.D{{"id", pid}}
+
+	_, err := coll.UpdateOne(context.TODO(), filter, pipe)
+	if err != nil {
+		fmt.Println("[ERROR] could not increment solvecount for",pid," because:" , err)
+	}
 }
