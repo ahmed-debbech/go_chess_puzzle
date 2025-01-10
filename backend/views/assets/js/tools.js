@@ -9,7 +9,6 @@ function requestNew(obj){
         url: '/load',
         type: "GET",
         success: function (data) {
-            console.log(data)
             if (data.ID == undefined) return
 
             $("#puzzle_id").html(data.ID)
@@ -38,7 +37,7 @@ function seen(pid){
         url: '/seen?pid='+pid,
         type: "GET",
         success: function (data) {
-            console.log(data)
+            
         },
 
         error: function (error) {
@@ -88,7 +87,6 @@ function getUuid(){
 
 function addCreatedMove(move){
     createdMoves += move
-    console.log(createdMoves)
 }
 function resetCreatedMoves(){
     createdMoves = ""
