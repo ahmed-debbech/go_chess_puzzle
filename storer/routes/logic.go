@@ -35,6 +35,12 @@ func rawToPuzzle(dat map[string]interface{}) (data.Puzzle){
 	for i:=0;i<config.BestMovesNumber; i++ {
 		strArray[i] = strSlice[i]
 	}
+
+	ll := make([]string, 0)
+	for _, v := range dat["SeenCount"].([]interface{}) {
+		ll = append(ll, v.(string))
+	}
+
 	fmt.Println(strArray)
 	puzzle := data.Puzzle{
 		ID: dat["ID"].(string),
@@ -43,7 +49,7 @@ func rawToPuzzle(dat map[string]interface{}) (data.Puzzle){
 		GenTime: dat["GenTime"].(string),
 		SolveCount: int(dat["SolveCount"].(float64)),
 		MatchLink: dat["MatchLink"].(string),
-		SeenCount: int(dat["SeenCount"].(float64)),
+		SeenCount: ll,
 		FirstSeenTime: dat["FirstSeenTime"].(string),
 		CurrentPlayer: int(dat["CurrentPlayer"].(float64)),
 	}

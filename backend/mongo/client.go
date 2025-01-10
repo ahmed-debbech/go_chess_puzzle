@@ -62,6 +62,7 @@ func MongoFindRandPuzzle() (*data.Puzzle, error){
 	if len(result) == 0 {return nil, errors.New("could not find any result")}
 	
 	fmt.Println("[SUCCESS] found random puzzle with id:", result[0].ID)
+
 	return &result[0], nil
 }
 
@@ -89,4 +90,33 @@ func Destroy() {
 		panic(err)
 	}
 	fmt.Println("[SUCCESS] destroy Mongo client")
+}
+
+func IncrementSolved(pid string){
+
+	coll := client.Database("official").Collection("puzzles")
+
+	pipe := bson.D{
+		{"$inc", bson.D{
+			{"solvecount", 1},
+		}},
+	}
+	filter := bson.D{{"id", pid}}
+
+	_, err := coll.UpdateOne(context.TODO(), filter, pipe)
+	if err != nil {
+		fmt.Println("[ERROR] could not increment solvecount for",pid," because:" , err)
+	}
+}
+func MarkAsSeen(pid string, uuid string) {
+	coll := client.Database("official").Collection("puzzles")
+
+	pipe := bson.D{{"$addToSet", bson.D{{"seencount", uuid}},}}
+
+	filter := bson.D{{"id", pid}}
+
+	_, err := coll.UpdateOne(context.TODO(), filter, pipe)
+	if err != nil {
+		fmt.Println("[ERROR] could not increment solvecount for",pid," because:" , err)
+	}
 }

@@ -68,7 +68,7 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
 
   showAvilableMoves(source, false)
 
-  if(data.BestMoves.length <= movesCount) {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); return 'snapback';}
+  if(data.BestMoves.length <= movesCount) {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); solved(data.ID); return 'snapback';}
 
   if(isRightMove(data.BestMoves[movesCount], source+target)){
     unHighlight(last_move_cell_start, last_move_cell_end)
@@ -80,15 +80,17 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
     chessJsMove(source, target)
     updateStatus(1)
 
+    addCreatedMove(source+target)
+
     setTimeout(() => {
       unHighlight(last_move_cell_start, last_move_cell_end)
       movesCount++
 
-      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); return;}
+      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); solved(data.ID); $("#status").html("SOLVED"); return;}
 
       computerPlays(adaptMove(data.BestMoves[movesCount]))
 
-      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); return;}
+      if(data.BestMoves.length <= movesCount)  {$('#solved_badge').css('display', 'block'); solved(data.ID); $("#status").html("SOLVED"); return;}
 
     },500)
   }else{
@@ -134,6 +136,7 @@ function buildBoard(dd){
 }
 
 function resetBoard(){
+  resetCreatedMoves()
   board = Chessboard('board1')
   movesCount = 0
   updateStatus(0)

@@ -96,7 +96,7 @@ func main() {
 			CurrentPlayer: whosPlaying,
 			SolveCount: 0,
 			MatchLink: game.GetTagPair("Site").Value,
-			SeenCount: 0,
+			SeenCount: make([]string, 0),
 			FirstSeenTime: "",
 		}
 		fmt.Println("[SUCCESS] generated puzzle " ,puzzle.String())
