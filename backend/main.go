@@ -98,9 +98,17 @@ func seenHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func rootHandle(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		w.WriteHeader(http.StatusNotFound)
+		p := loadPage("404.html")
+		fmt.Fprintf(w, string(p.Body))
+		return
+	}
+
 	p := loadPage("index.html")
 	if p == nil { return }
 
+	go prometheus.Publish("root")
 	fmt.Fprintln(w,string(p.Body))
 }
 

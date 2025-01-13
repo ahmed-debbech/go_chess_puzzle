@@ -1,1 +1,2 @@
 * implement a way to store current unsolved puzzle
+* check that solved api call uuid is found in the seen list 
