@@ -7,9 +7,12 @@ import (
 	"io/fs"
 	_"time"
 	"errors"
+	"log"
 
 	"github.com/ahmed-debbech/go_chess_puzzle/backend/logic"
 	"github.com/ahmed-debbech/go_chess_puzzle/backend/ramstore"
+	"github.com/ahmed-debbech/go_chess_puzzle/backend/prometheus"
+
 )
 
 //go:embed views/*.html
@@ -106,7 +109,6 @@ func main(){
 	fmt.Println("Hello world")
 
 	logic.ConnectDb()
-	defer logic.StopDb()
 
     staticFiles, _ := fs.Sub(assets, "views/assets")
 
@@ -122,5 +124,11 @@ func main(){
 	http.HandleFunc("/solved", solvedHandler)
 	http.HandleFunc("/seen", seenHandler)
 
-    fmt.Println(http.ListenAndServe(":5530", nil))
+    go func() {
+		log.Fatal(http.ListenAndServe(":5530", nil))
+	}()
+	go func() {
+		log.Fatal(prometheus.BuildServer())
+	}()
+	for {}
 }
