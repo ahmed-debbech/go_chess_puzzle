@@ -2,7 +2,7 @@ package prometheus
 
 import (
 	"net/http"
-	"fmt"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -76,6 +76,9 @@ func ExecLoop(){
 func BuildServer() error{
 
 	prometheus.MustRegister(totalRequests)
+	prometheus.MustRegister(totalLoad)
+	prometheus.MustRegister(totalSeen)
+	prometheus.MustRegister(totalSolved)
 
 	go ExecLoop()
 
