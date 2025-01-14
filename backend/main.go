@@ -41,6 +41,12 @@ func loadPage(title string) *Page {
 func loadPuzzleHandle(w http.ResponseWriter, r *http.Request){
 	if(r.Method != "GET"){http.Error(w, "Invalid", http.StatusMethodNotAllowed); return;}
 
+	query := r.URL.Query()
+	uuid := query.Get("u")
+	if uuid == "" {
+		w.Write([]byte("false"))
+	}
+
 	puzzle, err := logic.GetRandomPuzzle()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
@@ -52,7 +58,7 @@ func loadPuzzleHandle(w http.ResponseWriter, r *http.Request){
 		
 		w.Write([]byte(`{"error": "`+err.Error()+`"}`))
 	}
-	ramstore.SetToRamStore(puzzle)
+	ramstore.SetToRamStore(puzzle, uuid)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(serial)
 }
@@ -63,8 +69,13 @@ func solvedHandler(w http.ResponseWriter, r *http.Request){
 	query := r.URL.Query()
     puzzleId := query.Get("pid")
 	hash := query.Get("h")
+	uuid := query.Get("u")
 
-	solved := ramstore.CheckRamStore(puzzleId, hash)
+	if hash == "" || puzzleId == "" || uuid == "" {
+		w.Write([]byte("false"))
+	}
+
+	solved := ramstore.CheckRamStore(fmt.Sprintf("%s/%s", puzzleId, uuid), hash)
 
 	if solved {
 		go logic.IncrementSolvedCounter(puzzleId)
@@ -79,6 +90,9 @@ func seenHandler(w http.ResponseWriter, r *http.Request) {
 
 	query := r.URL.Query()
 	pid := query.Get("pid")
+	if pid == "" {
+		w.Write([]byte("false"))
+	}
 
 	cookie, err := r.Cookie("chess_uuid")
     if err != nil {

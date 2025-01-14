@@ -5,10 +5,10 @@ import (
 	"github.com/ahmed-debbech/go_chess_puzzle/backend/logic"
 )
 
-func SetToRamStore(puzzle *logic.PuzzleDto){
+func SetToRamStore(puzzle *logic.PuzzleDto, uuid string){
 	fmt.Println("Setting puzzle to RamStore")
 	GetRamStoreInstance()
-	Set(puzzle.ID, Calculate(puzzle.ID, puzzle.BestMoves))
+	Set(fmt.Sprintf("%s/%s", puzzle.ID, uuid), Calculate(puzzle.ID, puzzle.BestMoves))
 }
 
 func CheckRamStore(pid string, hash string) bool{
