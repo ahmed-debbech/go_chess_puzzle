@@ -6,7 +6,7 @@ function requestNew(obj){
     document.getElementById('board1').innerHTML = '';
 
     $.ajax({
-        url: '/load',
+        url: '/load?u=' + getUuid() ,
         type: "GET",
         success: function (data) {
             if (data.ID == undefined) return
@@ -117,7 +117,7 @@ function solved(id){
     content_hash += createdMoves
     let hash = calculateHash(content_hash)
     $.ajax({
-        url: '/solved?pid=' + id + '&h=' + hash,
+        url: '/solved?pid=' + id + '&h=' + hash + '&u=' + getUuid(),
         type: "GET",
         success: function (data) {
             console.log(data)
