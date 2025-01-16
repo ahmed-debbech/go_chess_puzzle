@@ -153,7 +153,7 @@ function updateStatus(mode){
     $("#status").css({"color" : "#15a51d"})
   }
   if(mode == -1){
-    $("#status").html("🔴 Wrong! try again..")
+    $("#status").html("🔴 Not best move! try again..")
     $("#status").css({"color" : "#dc3545"})
   }
 }
