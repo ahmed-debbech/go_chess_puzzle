@@ -14,15 +14,16 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-var uri string = readCreds();
+var uri, dbname = readCreds();
 var client *mongo.Client
 
-func readCreds() string{
+func readCreds() (string,string){
 	data, err := os.ReadFile("mongo/creds")
 	if err != nil {
 		panic("[ERROR] no creds file")
 	}
-	return strings.Split(string(data), "\n")[0]
+	return strings.Split(string(data), "\n")[0],
+	strings.Split(string(data), "\n")[1]
 }
 
 func Init() {
@@ -31,7 +32,7 @@ func Init() {
 
 func InsertPuzzle(puzzle data.Puzzle) string {
 	fmt.Println(puzzle)
-	col := client.Database("official").Collection("puzzles")
+	col := client.Database(dbname).Collection("puzzles")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
