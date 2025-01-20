@@ -29,7 +29,7 @@ jobs:
         echo "${{ secrets.PASSWORD }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
         cd backend
-        echo "${{ secrets.MongoUrl }}" >> mongo/creds
+        echo "${{ secrets.CREDS }}" >> mongo/creds
         go get .
         go get github.com/ahmed-debbech/go_chess_puzzle/generator/config
         go get github.com/ahmed-debbech/go_chess_puzzle/generator/data
