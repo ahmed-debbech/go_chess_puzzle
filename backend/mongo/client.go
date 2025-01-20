@@ -18,16 +18,18 @@ import (
 //go:embed creds
 var creds embed.FS
 
-var uri string = readCreds();
+var uri , dbname  = readCreds();
 var client *mongo.Client
 
-func readCreds() string{
+func readCreds() (string, string){
 	data, err := creds.ReadFile("creds")
 	if err != nil {
 		panic("[ERROR] no creds file")
 	}
-	return strings.Split(string(data), "\n")[0]
+	return strings.Split(string(data), "\n")[0], 
+	strings.Split(string(data), "\n")[1]
 }
+
 
 func Init() {
 	client = oneShotClient()
@@ -41,7 +43,7 @@ func MongoFindRandPuzzle() (*data.Puzzle, error){
         }
     }()
 
-	coll := client.Database("official").Collection("puzzles")
+	coll := client.Database(dbname).Collection("puzzles")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -94,7 +96,7 @@ func Destroy() {
 
 func IncrementSolved(pid string){
 
-	coll := client.Database("official").Collection("puzzles")
+	coll := client.Database(dbname).Collection("puzzles")
 
 	pipe := bson.D{
 		{"$inc", bson.D{
@@ -109,7 +111,7 @@ func IncrementSolved(pid string){
 	}
 }
 func MarkAsSeen(pid string, uuid string) {
-	coll := client.Database("official").Collection("puzzles")
+	coll := client.Database(dbname).Collection("puzzles")
 
 	pipe := bson.D{{"$addToSet", bson.D{{"seencount", uuid}},}}
 

@@ -66,6 +66,22 @@ function onDrop(source, target, piece, newPos, oldPos, orientation){
 
   pieceClickedOn = ''
 
+  var moves = game.moves({
+    square: source,
+    verbose: true
+  })
+
+  let onAvailableSquare = false 
+  for(let i=0; i<=moves.length-1; i++){
+    if(moves[i].to == target){
+      onAvailableSquare = true
+    }
+  }
+  if(onAvailableSquare == false){
+    showAvilableMoves(source, false)
+    return "snapback"
+  }
+
   showAvilableMoves(source, false)
 
   if(data.BestMoves.length <= movesCount) {$('#solved_badge').css('display', 'block'); $("#status").html("SOLVED"); solved(data.ID); return 'snapback';}
@@ -153,7 +169,7 @@ function updateStatus(mode){
     $("#status").css({"color" : "#15a51d"})
   }
   if(mode == -1){
-    $("#status").html("🔴 Wrong! try again..")
+    $("#status").html("🔴 Not best move...")
     $("#status").css({"color" : "#dc3545"})
   }
 }
