@@ -156,11 +156,11 @@ func main(){
 	//cron jobs
 	go func() {
 		ticker := time.NewTicker(5 * time.Second)
-
 		for {
             select {
             case _ = <-ticker.C:
 				logic.GetUniquePlayersMetric()
+				//logic.GetTotalNumberOfSolvesMetric()
             }
         }
 	}()

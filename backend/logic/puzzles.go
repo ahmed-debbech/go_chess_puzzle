@@ -26,6 +26,14 @@ func GetUniquePlayersMetric(){
 	go prometheus.PublishWithValue("unique", int(dat))
 }
 
+func GetTotalNumberOfSolvesMetric(){
+	dat, err := mongo.GetTotalNumberOfSolves()
+	if err != nil {
+		return;
+	}
+	go prometheus.PublishWithValue("grandsolve", int(dat))
+}
+
 func PuzzleToJson(puzzle PuzzleDto) ([]byte, error){
 	dat, err := puzzle.ToJson()
 	if err != nil {
