@@ -36,6 +36,13 @@ var (
 		},
 		[]string{"value"},
 	)
+	numberOfUniqueUsers = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "number_of_unique_users",
+			Help: "Number of unique users that visited the site",
+		},
+		[]string{"value"},
+	)
 )
 
 var (
@@ -43,6 +50,7 @@ var (
 	load = make(chan int, 1000)
 	seen = make(chan int, 1000)
 	solved = make(chan int, 1000)
+	unique = make(chan int)
 )
 
 func Publish(ack_type string){
@@ -58,6 +66,13 @@ func Publish(ack_type string){
 	}
 }
 
+func PublishWithValue(ack_type string, aa int){
+	switch ack_type {
+	case "unique":
+		unique <- aa
+	}
+}
+
 func ExecLoop(){
 	for{
 		select {
@@ -69,6 +84,8 @@ func ExecLoop(){
 			totalSeen.WithLabelValues("value").Inc()
 		case  _= <- solved:
 			totalSolved.WithLabelValues("value").Inc()
+		case  un := <- unique:
+			numberOfUniqueUsers.WithLabelValues("value").Set(float64(un))
 		}
 	}
 }
@@ -79,6 +96,7 @@ func BuildServer() error{
 	prometheus.MustRegister(totalLoad)
 	prometheus.MustRegister(totalSeen)
 	prometheus.MustRegister(totalSolved)
+	prometheus.MustRegister(numberOfUniqueUsers)
 
 	go ExecLoop()
 

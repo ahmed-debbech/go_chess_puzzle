@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"embed"
 	"io/fs"
-	_"time"
+	"time"
 	"errors"
 	"log"
 
@@ -152,5 +152,18 @@ func main(){
 	go func() {
 		log.Fatal(prometheus.BuildServer())
 	}()
+
+	//cron jobs
+	go func() {
+		ticker := time.NewTicker(5 * time.Second)
+
+		for {
+            select {
+            case _ = <-ticker.C:
+				logic.GetUniquePlayersMetric()
+            }
+        }
+	}()
+
 	for {}
 }
