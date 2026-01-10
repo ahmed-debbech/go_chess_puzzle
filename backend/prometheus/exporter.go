@@ -36,6 +36,20 @@ var (
 		},
 		[]string{"value"},
 	)
+	numberOfUniqueUsers = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "number_of_unique_users",
+			Help: "Number of unique users that visited the site",
+		},
+		[]string{"value"},
+	)
+	grandSolveTotal = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "number_of_all_solves",
+			Help: "Number of all solves of all puzzles together",
+		},
+		[]string{"value"},
+	)
 )
 
 var (
@@ -43,6 +57,8 @@ var (
 	load = make(chan int, 1000)
 	seen = make(chan int, 1000)
 	solved = make(chan int, 1000)
+	unique = make(chan int)
+	grandsolve = make(chan int)
 )
 
 func Publish(ack_type string){
@@ -58,6 +74,15 @@ func Publish(ack_type string){
 	}
 }
 
+func PublishWithValue(ack_type string, aa int){
+	switch ack_type {
+	case "unique":
+		unique <- aa
+	case "grandsolve":
+		grandsolve <- aa
+	}
+}
+
 func ExecLoop(){
 	for{
 		select {
@@ -69,6 +94,10 @@ func ExecLoop(){
 			totalSeen.WithLabelValues("value").Inc()
 		case  _= <- solved:
 			totalSolved.WithLabelValues("value").Inc()
+		case  un := <- unique:
+			numberOfUniqueUsers.WithLabelValues("value").Set(float64(un))
+		case  gs := <- grandsolve:
+			grandSolveTotal.WithLabelValues("value").Set(float64(gs))
 		}
 	}
 }
@@ -79,6 +108,8 @@ func BuildServer() error{
 	prometheus.MustRegister(totalLoad)
 	prometheus.MustRegister(totalSeen)
 	prometheus.MustRegister(totalSolved)
+	prometheus.MustRegister(numberOfUniqueUsers)
+	prometheus.MustRegister(grandSolveTotal)
 
 	go ExecLoop()
 

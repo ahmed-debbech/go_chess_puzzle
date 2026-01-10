@@ -122,3 +122,75 @@ func MarkAsSeen(pid string, uuid string) {
 		fmt.Println("[ERROR] could not increment solvecount for",pid," because:" , err)
 	}
 }
+
+func GetUniquePlayers() (int32, error){
+	
+    defer func() {
+        if r := recover(); r != nil {
+            fmt.Println("Recovered. Error:\n", r)
+        }
+    }()
+
+	coll := client.Database(dbname).Collection("puzzles")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var result []bson.M
+	filter := mongo.Pipeline{
+		{{"$unwind", "$seencount"}},
+		{{"$group", bson.D{{"_id", "$seencount"}}}},
+		{{"$count", "uniqueUUIDs"}},
+	}
+
+	cursor, err := coll.Aggregate(ctx,filter)
+	if err != nil {
+		fmt.Println("[ERROR] could not get value from GetUniquePlayers()" , err)
+		return -1, errors.New("could not get value from GetUniquePlayers()")
+	}
+	if err = cursor.All(ctx, &result); err != nil {
+		fmt.Println("[ERROR] could not extract random puzzle from result because:", err)
+		return -1, errors.New("could not extract random puzzle from result")
+	}
+
+	if len(result) == 0 {return -1, errors.New("could not find any result")}
+	
+	return result[0]["uniqueUUIDs"].(int32), nil
+}
+
+func GetTotalNumberOfSolves() (int32, error){
+	
+    defer func() {
+        if r := recover(); r != nil {
+            fmt.Println("Recovered. Error:\n", r)
+        }
+    }()
+
+	coll := client.Database(dbname).Collection("puzzles")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var result []bson.M
+	filter := []bson.M{
+		{
+			"$group": bson.M{
+				"_id":        "",
+				"solvecount": bson.M{"$sum": "$solvecount"},
+			},
+		},
+	}
+	cursor, err := coll.Aggregate(ctx,filter)
+	if err != nil {
+		fmt.Println("[ERROR] could not get value from GetTotalNumberOfSolves()" , err)
+		return -1, errors.New("could not get value from GetTotalNumberOfSolves()")
+	}
+	if err = cursor.All(ctx, &result); err != nil {
+		fmt.Println("[ERROR] could not extract random puzzle from result because:", err)
+		return -1, errors.New("could not extract random puzzle from result")
+	}
+
+	if len(result) == 0 {return -1, errors.New("could not find any result")}
+	
+	return result[0]["solvecount"].(int32), nil
+}

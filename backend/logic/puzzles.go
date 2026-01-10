@@ -9,12 +9,29 @@ import (
 
 func GetRandomPuzzle() (*PuzzleDto, error){
 	dat, err := mongo.MongoFindRandPuzzle()
+
 	if err != nil {
 		return &PuzzleDto{}, errors.New("Could not find a random puzzle.")
 	}
 	pdto := fromPuzzleDao(dat)
 	go prometheus.Publish("load")
 	return pdto, nil
+}
+
+func GetUniquePlayersMetric(){
+	dat, err := mongo.GetUniquePlayers()
+	if err != nil {
+		return;
+	}
+	go prometheus.PublishWithValue("unique", int(dat))
+}
+
+func GetTotalNumberOfSolvesMetric(){
+	dat, err := mongo.GetTotalNumberOfSolves()
+	if err != nil {
+		return;
+	}
+	go prometheus.PublishWithValue("grandsolve", int(dat))
 }
 
 func PuzzleToJson(puzzle PuzzleDto) ([]byte, error){
