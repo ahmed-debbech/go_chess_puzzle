@@ -11,7 +11,7 @@ COPY ./backend/go.mod ./backend/go.sum ./src/backend/
 
 WORKDIR /src/backend
 
-RUN go mod download
+RUN go get .
 
 # Copy the full repository because the backend may import
 # packages from other directories in the repository.
