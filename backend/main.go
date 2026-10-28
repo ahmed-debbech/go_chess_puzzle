@@ -152,5 +152,5 @@ func main(){
 	go func() {
 		log.Fatal(prometheus.BuildServer())
 	}()
-	for {}
+	select {}
 }

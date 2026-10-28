@@ -6,6 +6,8 @@ github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250103134145-8e8a8af
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250103134145-8e8a8af4dbd6/go.mod h1:h7rdtIN/l62JTh9v0VGX+l62NmKpOceGWZcgNeTUbn0=
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250109214724-6b0c7875d733 h1:IPoZo5TpbPFc3/gGnyJzyx7B8GwcdTPK71vpS0rh4YM=
 github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250109214724-6b0c7875d733/go.mod h1:h7rdtIN/l62JTh9v0VGX+l62NmKpOceGWZcgNeTUbn0=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20260110132139-9ad2a4385602 h1:0bADeQxrXD2s6YPErTdyLG4uI5qzzm1jwKAmGGHh7NM=
+github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20260110132139-9ad2a4385602/go.mod h1:h7rdtIN/l62JTh9v0VGX+l62NmKpOceGWZcgNeTUbn0=
 github.com/ajstarks/svgo v0.0.0-20200320125537-f189e35d30ca/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=

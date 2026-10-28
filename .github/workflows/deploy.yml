@@ -1,52 +1,47 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
-name: Go
+name: Publish Go Backend to GHCR
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ghcr.io/ahmed-debbech/go_chess_puzzle
 
 jobs:
-
-  build:
+  publish:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.23.2'
+      - name: Validate Docker Compose
+        run: |
+          echo "${{ secrets.CREDS }}" >> mongo/creds
+          docker compose -f compose.yaml config -q
 
-    - name: Build
-      run: |
-        mkdir -p ~/.ssh
-        touch ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        echo "${{ secrets.PASSWORD }}" > ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-        cd backend
-        echo "${{ secrets.CREDS }}" >> mongo/creds
-        go get .
-        go get github.com/ahmed-debbech/go_chess_puzzle/generator/config
-        go get github.com/ahmed-debbech/go_chess_puzzle/generator/data
-        go build -v .
-        ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "kill -9 \$(cat ~/backend.pid)" || true
-        scp backend ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/${{ secrets.USERNAME }}
-      continue-on-error: true
-    
-    - name: Deploy
-      uses: appleboy/ssh-action@v1.2.0
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        script: |
-          echo "On Server!"
-          rm nohup.out
-          nohup ./backend >> ss 2>&1 < /dev/null & echo $! > backend.pid; disown
-          echo "Backend process started in the background. Exiting SSH session..."
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: backend/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/ahmed-debbech/go_chess_puzzle:latest
+            ghcr.io/ahmed-debbech/go_chess_puzzle:${{ github.sha }}

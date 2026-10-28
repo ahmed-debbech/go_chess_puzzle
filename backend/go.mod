@@ -3,7 +3,8 @@ module github.com/ahmed-debbech/go_chess_puzzle/backend
 go 1.23.2
 
 require (
-	github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20250109214724-6b0c7875d733
+	github.com/ahmed-debbech/go_chess_puzzle/generator v0.0.0-20260110132139-9ad2a4385602
+	github.com/prometheus/client_golang v1.20.5
 	go.mongodb.org/mongo-driver v1.17.1
 )
 
@@ -16,7 +17,6 @@ require (
 	github.com/montanaflynn/stats v0.7.1 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/notnil/chess v1.9.0 // indirect
-	github.com/prometheus/client_golang v1.20.5 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.55.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect

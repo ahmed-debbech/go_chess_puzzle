@@ -1,0 +1,10 @@
+
+services:
+  backend:
+    #image: ghcr.io/ahmed-debbech/go_chess_puzzle:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "5530:5530"
