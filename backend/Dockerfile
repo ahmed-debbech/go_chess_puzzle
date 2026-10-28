@@ -7,7 +7,7 @@ RUN apk add --no-cache git ca-certificates
 WORKDIR /src
 
 # Copy the backend Go module files
-COPY ./go.mod ./go.sum ./backend/
+COPY ./backend/go.mod ./backend/go.sum ./src/backend/
 
 WORKDIR /src/backend
 
