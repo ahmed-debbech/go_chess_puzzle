@@ -23,6 +23,7 @@ jobs:
 
       - name: Validate Docker Compose
         run: |
+          touch mongo/creds
           echo "${{ secrets.CREDS }}" >> mongo/creds
           docker compose -f compose.yaml config -q
 
