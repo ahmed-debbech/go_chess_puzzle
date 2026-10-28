@@ -4,20 +4,12 @@ FROM golang:1.23.2-alpine AS builder
 
 RUN apk add --no-cache git ca-certificates
 
-WORKDIR /src
+COPY . .
 
-# Copy the backend Go module files
-COPY ./backend/go.mod ./backend/go.sum ./src/backend/
-
-WORKDIR /src/backend
+WORKDIR ./backend
 
 RUN go get .
 
-# Copy the full repository because the backend may import
-# packages from other directories in the repository.
-COPY . .
-
-WORKDIR /src/backend
 
 RUN CGO_ENABLED=0 GOOS=linux go build \
     -trimpath \
